@@ -1,0 +1,1 @@
+export const test = async ():Promise<boolean> => { return true};

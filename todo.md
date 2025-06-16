@@ -1,0 +1,7 @@
+- TODO: ~~Link Up the Courses to the db, to allow add new courses.~~
+- TODO: Display NC Items - on same page as units
+- TODO: Link LO to NC Item
+- TODO: Add Lessons, to Units 
+- TODO: Link LO's (from the unit) to Lessons
+- TODO: Calculate LO's for NC Items as those for the current course and total. So we can see that the NC is covered, and where is NC LO's originate. 
+- TODO: Dialog to add LO to Units, includes NC items to associate LO with an item.
