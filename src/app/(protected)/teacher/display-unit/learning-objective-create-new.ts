@@ -1,5 +1,6 @@
 import { Course, Courses } from "@/actions/courses/types";
 import { LearningObjective, LearningObjectives, LearningObjectiveSchema } from "@/actions/learning_objectives/types";
+import { v4 as uuidv4 } from 'uuid';
 
 const nextOrderBy = ( los: LearningObjectives) : number => {
     if (los.length == 0 || los === null)
@@ -10,7 +11,7 @@ const nextOrderBy = ( los: LearningObjectives) : number => {
 
 export const createNewLearningObjective = (unit_id: string, los: LearningObjectives):LearningObjective => {
     return  LearningObjectiveSchema.parse({
-    learning_objective_id: crypto.randomUUID(),
+    learning_objective_id: uuidv4(),
     title: `TBAT New LO ${los.filter(lo => lo.unit_id === unit_id).length + 1}`,
     order_by: nextOrderBy(los),
     unit_id,

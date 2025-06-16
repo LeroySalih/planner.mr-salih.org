@@ -22,6 +22,7 @@ import { addUnit } from "@/actions/units/addUnit";
 import { toast } from "sonner";
 
 import { UnitSchema } from "@/actions/units/types";
+import { v4 as uuidv4 } from 'uuid';
 
 const UnitBtnAdd = ({course}:{course:Course}) => {
 
@@ -29,7 +30,7 @@ const UnitBtnAdd = ({course}:{course:Course}) => {
     const createNewUnit = (course: Course) => {
         const newUnit = UnitSchema.parse({
             type: "unit",
-            unit_id: crypto.randomUUID(),
+            unit_id: uuidv4(),
             course_id: course.course_id,
             title: "New Unit",
             tags: [],

@@ -37,7 +37,7 @@ import MoveUpLessonButton from './lesson-btn-move-up';
 import LessonList from './lesson-list';
 import DeleteUnitButton from './unit-btn-delete';
 
-
+import { v4 as uuidv4 } from 'uuid';
 
 
 interface DisplayUnitProps {
@@ -208,7 +208,7 @@ const DisplayUnit = () => {
                   unit && getLearningObjectivesForUnit(unit.unit_id)
                     .map((lo, index) => {
                       return (
-                        <DisplayLearningObjective key={lo.learning_objective_id || crypto.randomUUID()} index={lo.learning_objective_id} lo={lo}/>
+                        <DisplayLearningObjective key={lo.learning_objective_id || uuidv4()} index={lo.learning_objective_id} lo={lo}/>
                       );
                     })  
                 }

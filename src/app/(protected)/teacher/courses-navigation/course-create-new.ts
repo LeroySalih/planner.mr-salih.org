@@ -1,6 +1,7 @@
 import { Course, Courses } from "@/actions/courses/types";
 import { z } from "zod";
 import { CourseSchema } from "@/actions/courses/types";
+import { v4 as uuidv4 } from 'uuid';
 
 const nextOrderBy = (courses: Courses) : number => {
     if (courses.length == 0 || courses === null)
@@ -14,7 +15,7 @@ const nextOrderBy = (courses: Courses) : number => {
 export const createNewCourse = (courses: Courses):Course => {
     return CourseSchema.parse( {
       type: "course",
-      course_id: crypto.randomUUID(),
+      course_id: uuidv4(),
       title: "New Course",
       nc_id: "",
       tags: [],
