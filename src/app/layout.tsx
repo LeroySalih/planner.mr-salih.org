@@ -56,7 +56,20 @@ const RootLayout = async ({
       initialCriteria={criteria}
       initialLOLessonMaps={loLesonsMaps}
       >
-        {children}
+        <div className="flex flex-col h-screen overflow-hidden">
+          <div className="p-4 flex items-center justify-between fixed top-0 left-0 right-0 z-50 bg-slate-100">
+            <div>Planner</div>
+            <div>Sign In</div>
+          </div>
+
+          {/* Spacer for fixed header height */}
+          <div className="h-12"></div>
+
+          <div className="flex-1 overflow-y-auto">
+            {children}
+          </div>
+        
+        </div>
     </JotaiProvider>
        
       </body>

@@ -231,8 +231,8 @@ const DisplayLesson = ({index, lesson, onDragStart}: {index: number,  lesson:Les
             .map((loMap) => {
                 const lo = learningObjectives.find((l) => l.learning_objective_id === loMap.learning_objective_id);
                 return (
-                    <div key={loMap.learning_objective_id} className="text-sm text-blue-500 ml-2">
-                        {lo ? lo.title : "Unknown LO"}
+                    <div key={loMap.learning_objective_id} >
+                        {lo ? <span className="text-[11px] text-neutral-500 ml-9">&bull; {lo.title}</span> : "Unknown LO"}
                     </div>
                 )
             })
