@@ -2,12 +2,10 @@
 -- Profile Table to store user attributes
 -- ==============================================
 
-CREATE TABLE profiles (
-    user_id text PRIMARY KEY , -- 1 to 1 relationship with users
-    first_name TEXT NULL,     
-    last_name TEXT NULL,
-    is_teacher BOOLEAN DEFAULT false,
-
+CREATE TABLE groups (
+    group_id text PRIMARY KEY DEFAULT gen_random_uuid(), 
+    title       TEXT NOT NULL,   
+    
 
     active      BOOLEAN DEFAULT true,
     created     TIMESTAMP DEFAULT now(),

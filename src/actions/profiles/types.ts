@@ -5,6 +5,8 @@ export const ProfileSchema = z.object({
   type: z.string().default("user"),
   user_id: z.string(),
   is_teacher: z.boolean(),
+  first_name: z.string().nullable().default(""),
+  last_name: z.string().nullable().default(""),
 
   active: z.boolean(),
   created: z.coerce.date(), // accepts string or Date

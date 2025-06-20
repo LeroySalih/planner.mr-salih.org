@@ -83,11 +83,15 @@ const RootLayout = async ({
                 <SignUpButton />
               </SignedOut>
               
-              <div className="grow ml-4 text-sm hover:underline hover:text-blue-400">
+              <div className="flex gap-2 grow ">
                 <SignedIn>
-                {profile && profile.data?.is_teacher && (<div>
+                {profile && profile.data?.is_teacher && (<div className="ml-4 text-sm hover:underline hover:text-blue-400">
                   <Link href="/plans">Course Plans</Link>
                   </div>)}
+
+                {profile && (<div className="ml-4 text-sm hover:underline hover:text-blue-400">
+                  <Link href="/profile">Profile</Link>
+                </div>)}
 
                 </SignedIn>
               </div>

@@ -1,9 +1,21 @@
 -- File: 00-drops.sql
 
+
+-- ================================
+-- Drop Profiles Table
+-- ================================
+DROP TABLE IF EXISTS group_membership CASCADE;
+
 -- ================================
 -- Drop Profiles Table
 -- ================================
 DROP TABLE IF EXISTS profiles CASCADE;
+
+
+-- ================================
+-- Drop Profiles Table
+-- ================================
+DROP TABLE IF EXISTS groups CASCADE;
 
 
 -- ================================
@@ -316,7 +328,8 @@ create table learning_objective_lesson_map (
 
 CREATE TABLE profiles (
     user_id text PRIMARY KEY , -- 1 to 1 relationship with users
-     
+    first_name TEXT NULL,     
+    last_name TEXT NULL,
     is_teacher BOOLEAN DEFAULT false,
 
 
@@ -325,6 +338,34 @@ CREATE TABLE profiles (
     created_by  TEXT DEFAULT 'auto',
     order_by    INT
 );
+
+-- File: 10-groups.sql
+-- ==============================================
+-- Profile Table to store user attributes
+-- ==============================================
+
+CREATE TABLE groups (
+    group_id text PRIMARY KEY DEFAULT gen_random_uuid(), 
+    title       TEXT NOT NULL,   
+    
+
+    active      BOOLEAN DEFAULT true,
+    created     TIMESTAMP DEFAULT now(),
+    created_by  TEXT DEFAULT 'auto',
+    order_by    INT
+);
+
+-- File: 11-group-membership.sql
+create table group_membership (
+    user_id text references profiles (user_id) not null,
+    group_id text references groups (group_id) not null,
+    role text not null default 'member',
+    
+    active boolean default true,
+    created timestamp default now(),    
+    primary key (user_id, group_id)
+);
+
 
 -- File: 99-seed.sql
 -- 01_insert_nc.sql
@@ -458,6 +499,20 @@ INSERT INTO learning_objective_lesson_map (learning_objective_id, lesson_id) VAL
 
 
 -- Set Up USers
-INSERT INTO profiles (user_id, is_teacher) VALUES ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', true);
+INSERT INTO profiles (user_id, is_teacher, first_name, last_name) VALUES ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', true, 'Leroy', 'Salih');
+
+-- Set Up Groups
+INSERT INTO groups (title, created_by) VALUES ('25-09A-DT', 'user_2yjidP4UdYKaAmizJ9TzJvecPhw'),
+('25-09B-DT', 'user_2yjidP4UdYKaAmizJ9TzJvecPhw'),
+('25-09C-DT', 'user_2yjidP4UdYKaAmizJ9TzJvecPhw'),
+('25-09D-DT', 'user_2yjidP4UdYKaAmizJ9TzJvecPhw');
+
+
+INSERT INTO group_membership (user_id, group_id, role) VALUES
+('user_2yjidP4UdYKaAmizJ9TzJvecPhw', (SELECT group_id FROM groups WHERE title = '25-09A-DT'), 'teacher'),
+('user_2yjidP4UdYKaAmizJ9TzJvecPhw', (SELECT group_id FROM groups WHERE title = '25-09B-DT'), 'teacher'),
+('user_2yjidP4UdYKaAmizJ9TzJvecPhw', (SELECT group_id FROM groups WHERE title = '25-09C-DT'), 'teacher'),
+('user_2yjidP4UdYKaAmizJ9TzJvecPhw', (SELECT group_id FROM groups WHERE title = '25-09D-DT'), 'teacher');
+
 
 

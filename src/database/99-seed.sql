@@ -129,4 +129,18 @@ INSERT INTO learning_objective_lesson_map (learning_objective_id, lesson_id) VAL
 
 
 -- Set Up USers
-INSERT INTO profiles (user_id, is_teacher) VALUES ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', true);
+INSERT INTO profiles (user_id, is_teacher, first_name, last_name) VALUES ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', true, 'Leroy', 'Salih');
+
+-- Set Up Groups
+INSERT INTO groups (title, created_by) VALUES ('25-09A-DT', 'user_2yjidP4UdYKaAmizJ9TzJvecPhw'),
+('25-09B-DT', 'user_2yjidP4UdYKaAmizJ9TzJvecPhw'),
+('25-09C-DT', 'user_2yjidP4UdYKaAmizJ9TzJvecPhw'),
+('25-09D-DT', 'user_2yjidP4UdYKaAmizJ9TzJvecPhw');
+
+
+INSERT INTO group_membership (user_id, group_id, role) VALUES
+('user_2yjidP4UdYKaAmizJ9TzJvecPhw', (SELECT group_id FROM groups WHERE title = '25-09A-DT'), 'teacher'),
+('user_2yjidP4UdYKaAmizJ9TzJvecPhw', (SELECT group_id FROM groups WHERE title = '25-09B-DT'), 'teacher'),
+('user_2yjidP4UdYKaAmizJ9TzJvecPhw', (SELECT group_id FROM groups WHERE title = '25-09C-DT'), 'teacher'),
+('user_2yjidP4UdYKaAmizJ9TzJvecPhw', (SELECT group_id FROM groups WHERE title = '25-09D-DT'), 'teacher');
+

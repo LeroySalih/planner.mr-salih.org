@@ -22,7 +22,7 @@ export const getProfile = async (user_id: string): Promise<ReturnVal> => {
     
     try{
         const query = `
-            select user_id, is_teacher, active, created, created_by, order_by
+            select user_id, is_teacher, first_name, last_name, active, created, created_by, order_by
             from profiles
             where user_id = $1
         `

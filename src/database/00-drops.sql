@@ -1,8 +1,20 @@
 
+
+-- ================================
+-- Drop Profiles Table
+-- ================================
+DROP TABLE IF EXISTS group_membership CASCADE;
+
 -- ================================
 -- Drop Profiles Table
 -- ================================
 DROP TABLE IF EXISTS profiles CASCADE;
+
+
+-- ================================
+-- Drop Profiles Table
+-- ================================
+DROP TABLE IF EXISTS groups CASCADE;
 
 
 -- ================================
