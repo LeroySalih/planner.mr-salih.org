@@ -1,4 +1,11 @@
 -- File: 00-drops.sql
+
+-- ================================
+-- Drop Profiles Table
+-- ================================
+DROP TABLE IF EXISTS profiles CASCADE;
+
+
 -- ================================
 -- Drop LearningObjectiveLessonMap Table
 -- ================================
@@ -302,6 +309,23 @@ create table learning_objective_lesson_map (
     primary key (learning_objective_id, lesson_id)
 );
 
+-- File: 09-profiles.sql
+-- ==============================================
+-- Profile Table to store user attributes
+-- ==============================================
+
+CREATE TABLE profiles (
+    user_id text PRIMARY KEY , -- 1 to 1 relationship with users
+     
+    is_teacher BOOLEAN DEFAULT false,
+
+
+    active      BOOLEAN DEFAULT true,
+    created     TIMESTAMP DEFAULT now(),
+    created_by  TEXT DEFAULT 'auto',
+    order_by    INT
+);
+
 -- File: 99-seed.sql
 -- 01_insert_nc.sql
 -- Seed the ncs table with the key stages and subjects
@@ -430,4 +454,10 @@ INSERT INTO learning_objective_lesson_map (learning_objective_id, lesson_id) VAL
  (SELECT lesson_id FROM lessons WHERE title = 'Lesson 3: Sketching and Prototyping')),
 ((SELECT learning_objective_id FROM learning_objectives WHERE title = 'TBAT Communicate Designs'),
  (SELECT lesson_id FROM lessons WHERE title = 'Lesson 1: Basics of CAD'));
+
+
+
+-- Set Up USers
+INSERT INTO profiles (user_id, is_teacher) VALUES ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', true);
+
 

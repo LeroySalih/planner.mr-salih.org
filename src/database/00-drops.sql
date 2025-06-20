@@ -1,3 +1,10 @@
+
+-- ================================
+-- Drop Profiles Table
+-- ================================
+DROP TABLE IF EXISTS profiles CASCADE;
+
+
 -- ================================
 -- Drop LearningObjectiveLessonMap Table
 -- ================================

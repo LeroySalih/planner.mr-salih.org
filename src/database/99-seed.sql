@@ -125,3 +125,8 @@ INSERT INTO learning_objective_lesson_map (learning_objective_id, lesson_id) VAL
  (SELECT lesson_id FROM lessons WHERE title = 'Lesson 3: Sketching and Prototyping')),
 ((SELECT learning_objective_id FROM learning_objectives WHERE title = 'TBAT Communicate Designs'),
  (SELECT lesson_id FROM lessons WHERE title = 'Lesson 1: Basics of CAD'));
+
+
+
+-- Set Up USers
+INSERT INTO profiles (user_id, is_teacher) VALUES ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', true);

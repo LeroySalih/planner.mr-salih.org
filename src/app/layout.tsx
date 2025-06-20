@@ -14,7 +14,19 @@ import { getLessons } from "@/actions/lessons/getLessons";
 import { getCriteria } from "@/actions/criteria/getCriteria";
 import { getLOLessonsMaps } from "@/actions/learning-objectives-lessons-map/getLOLessonsMap";
 
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
+import { auth, currentUser } from "@clerk/nextjs/server";
+
+import {getProfile} from "@/actions/profiles/getProfile";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Course Planner",
@@ -38,6 +50,12 @@ const RootLayout = async ({
 
     console.log("Courses (layout): ", courses);
 
+    const {userId} = await auth();
+    console.log("User ID in layout: ", userId);
+    const profile = userId ? await getProfile(userId) : null;
+
+    
+    
   return (
     <html lang="en" className="">
       <body
@@ -46,7 +64,7 @@ const RootLayout = async ({
           font-sans bg-background text-foreground
           ${geistSans.variable} ${geistMono.variable} ${inter.variable} ${merriweather.variable} antialiased `}
       >
-
+ <ClerkProvider>
     <JotaiProvider 
       initialCourses={courses} 
       initialNCs={NCs} 
@@ -57,21 +75,45 @@ const RootLayout = async ({
       initialLOLessonMaps={loLesonsMaps}
       >
         <div className="flex flex-col h-screen overflow-hidden">
-          <div className="p-4 flex items-center justify-between fixed top-0 left-0 right-0 z-50 bg-slate-100">
+          <div className="p-4 flex flex-row items-center  fixed top-0 left-0 right-0 z-50 bg-slate-100">
             <div>Planner</div>
-            <div>Sign In</div>
+            
+              <SignedOut>
+                <SignInButton />
+                <SignUpButton />
+              </SignedOut>
+              
+              <div className="grow ml-4 text-sm hover:underline hover:text-blue-400">
+                <SignedIn>
+                {profile && profile.data?.is_teacher && (<div>
+                  <Link href="/plans">Course Plans</Link>
+                  </div>)}
+
+                </SignedIn>
+              </div>
+
+              
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+
+            
           </div>
 
           {/* Spacer for fixed header height */}
           <div className="h-12"></div>
 
           <div className="flex-1 overflow-y-auto">
-            {children}
+            
+              {children}
+            
+            
           </div>
         
         </div>
     </JotaiProvider>
-       
+       </ClerkProvider>
+        <Toaster richColors />
       </body>
     </html>
   );
