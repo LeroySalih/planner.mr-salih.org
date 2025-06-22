@@ -22,9 +22,32 @@ export const getProfile = async (user_id: string): Promise<ReturnVal> => {
     
     try{
         const query = `
-            select user_id, is_teacher, first_name, last_name, active, created, created_by, order_by
-            from profiles
-            where user_id = $1
+            SELECT 
+    p.user_id,
+    p.first_name,
+    p.last_name,
+    p.is_teacher,
+    p.created,
+    p.active,
+    p.created_by,
+    p.order_by,
+    COALESCE(
+        json_agg(
+            jsonb_build_object(
+                'group_id', g.group_id,
+                'title', g.title,
+                'role', gm.role
+            )
+        ) FILTER (WHERE g.group_id IS NOT NULL),
+        '[]'::json
+    ) AS groups
+FROM profiles p
+LEFT JOIN group_membership gm 
+    ON p.user_id = gm.user_id AND gm.active = true
+LEFT JOIN groups g 
+    ON gm.group_id = g.group_id AND g.active = true
+WHERE p.user_id = $1 -- replace with your user id or use a parameter
+GROUP BY p.user_id, p.first_name, p.last_name;
         `
         const result = await pool.query(query, [user_id]);
 

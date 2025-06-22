@@ -2,6 +2,7 @@ import { getProfile } from "@/actions/profiles/getProfile";
 import { useEmailLink } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import DisplayProfile from "./display-profile";
+import DisplayClasses from "./display-classes";
 
 const Page = async () => {
     
@@ -18,11 +19,10 @@ const Page = async () => {
 
     return <div className="flex flex-col w-full h-screen bg-white-100 p-8 text-3xl">
         Profile
-        <div>
-            <pre>{JSON.stringify(profile, null, 2)}</pre>
-        </div>
-
+       
         <DisplayProfile userId={userId} />
+        
+
 
     </div>
 }

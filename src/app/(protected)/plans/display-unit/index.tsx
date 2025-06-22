@@ -194,6 +194,7 @@ const DisplayUnit = () => {
           <TabsList>
             <TabsTrigger value="rubric">Rubric</TabsTrigger>
             <TabsTrigger value="lessons">Lessons</TabsTrigger>
+            <TabsTrigger value="Assignments">Assignments</TabsTrigger>
           </TabsList>
 
           <TabsContent value="rubric">
@@ -223,6 +224,10 @@ const DisplayUnit = () => {
             <div>
               {lessons && unit && <LessonList  initialLessons={lessons.filter(l => l.unit_id === unit?.unit_id).sort((a, b)=> a.order_by - b.order_by)} onReorderComplete={handleOnReorder} />}
             </div>
+          </TabsContent>
+
+          <TabsContent value="assignments">
+            <div>Assignments</div>
           </TabsContent>
           
         </Tabs>
