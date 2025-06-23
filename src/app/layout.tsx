@@ -27,6 +27,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 
 import {getProfile} from "@/actions/profiles/getProfile";
 import Link from "next/link";
+import { createNewProfile } from "@/actions/profiles/createNewProfile";
 
 export const metadata: Metadata = {
   title: "Course Planner",
@@ -52,7 +53,18 @@ const RootLayout = async ({
 
     const {userId} = await auth();
     console.log("User ID in layout: ", userId);
-    const profile = userId ? await getProfile(userId) : null;
+    let profile = userId ? await getProfile(userId) : null;
+
+    console.log("userId: ", userId, "profile: ", profile);
+
+    // first time user signs in
+    if (userId !== null && profile?.data === null){
+      const cUser = await currentUser();
+      console.info("Profile not found for user ID: ", userId);
+      let profile = await createNewProfile(userId, cUser?.firstName || "Not Set", cUser?.lastName || "Not Set");
+
+
+    }
 
     
     

@@ -55,7 +55,7 @@ GROUP BY p.user_id, p.first_name, p.last_name;
             ...row,
             // if `row.created` is already a Date
             created: row.created.toISOString()
-          }))[0] ) as Profile;
+          }))[0] || null) as Profile;
     
     } catch(err) {
         
