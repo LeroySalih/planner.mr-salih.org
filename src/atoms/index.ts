@@ -7,6 +7,9 @@ import { Lesson, type Lessons } from "@/actions/lessons/types";
 import { atom } from "jotai";
 import { Criterias } from "@/actions/criteria/types";
 import { LOLessonsMaps } from "@/actions/learning-objectives-lessons-map/types";
+import { Assignments } from "@/actions/assignments/types";
+import {Activities} from "@/actions/activities/types";
+import { Groups} from "@/actions/groups/types";
 
 
 export type DisplayMode = "courses" | "units" | "lessons";
@@ -18,10 +21,13 @@ export const UnitsAtom = atom<Units>([]);
 
 export const LearningObjectivesAtom = atom<LearningObjectives>([]);
 export const LessonsAtom = atom <Lessons>([]);
+export const ActivitiesAtom = atom <Activities>([]);
 
 export const CriteriasAtom = atom<Criterias>([]);
 
 export const LOLessonsMapsAtom = atom<LOLessonsMaps>([]);
+export const AssignmentsAtom = atom<Assignments | null>(null);
+export const GroupsAtom = atom<Groups | null>(null);
 
 export const CurrentCourseAtom = atom<Course | null>(null);
 export const CurrentUnitAtom = atom<Unit | null>(null);
@@ -29,6 +35,8 @@ export const CurrentLessonAtom = atom<Lesson | null>(null);
 
 
 export const CurrentDetailsObjectAtom = atom<Course | Unit | Lesson | null>(null);
+
+
 
 
 // return the NC that matches the current course.

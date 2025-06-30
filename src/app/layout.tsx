@@ -28,6 +28,9 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import {getProfile} from "@/actions/profiles/getProfile";
 import Link from "next/link";
 import { createNewProfile } from "@/actions/profiles/createNewProfile";
+import { getAssignments } from "@/actions/assignments/getAssignments";
+import { getGroups } from "@/actions/groups/getGroups";
+import { getActivities } from "@/actions/activities/getActivities";
 
 export const metadata: Metadata = {
   title: "Course Planner",
@@ -48,15 +51,17 @@ const RootLayout = async ({
     const {data: lessons, error: lessonsError} = await getLessons();
     const {data: criteria, error: criteriaError} = await getCriteria();
     const {data: loLesonsMaps, error: loLessonsMapError} = await getLOLessonsMaps();
+    const {data: assignments, error: assignmentsError} = await getAssignments();
+    const {data: groups, error: groupsError} = await getGroups();
+    const {data: activities, error: activitiesError} = await getActivities();
 
-    console.log("Courses (layout): ", courses);
+
+    console.log("Assignments", assignments, assignmentsError);
 
     const {userId} = await auth();
-    console.log("User ID in layout: ", userId);
     let profile = userId ? await getProfile(userId) : null;
 
-    console.log("userId: ", userId, "profile: ", profile);
-
+    
     // first time user signs in
     if (userId !== null && profile?.data === null){
       const cUser = await currentUser();
@@ -83,9 +88,12 @@ const RootLayout = async ({
       initialUnits={units} 
       initialLOs={los}
       initialLessons={lessons}
+      initialActivities={activities}
       initialCriteria={criteria}
       initialLOLessonMaps={loLesonsMaps}
-      >
+      initialAssignments={assignments}
+      initialGroups={groups}
+      > 
         <div className="flex flex-col h-screen overflow-hidden">
           <div className="p-4 flex flex-row items-center  fixed top-0 left-0 right-0 z-50 bg-slate-100">
             <div>Planner</div>

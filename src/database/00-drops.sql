@@ -1,6 +1,20 @@
 
 
 -- ================================
+-- Drop Activities Table
+-- ================================
+DROP FUNCTION IF EXISTS set_activities_order_by;
+DROP TRIGGER IF EXISTS trg_set_activities_order_by;
+DROP TABLE IF EXISTS activities CASCADE;
+
+
+-- ================================
+-- Drop Assignments Table
+-- ================================
+DROP TABLE IF EXISTS assignments CASCADE;
+
+
+-- ================================
 -- Drop Profiles Table
 -- ================================
 DROP TABLE IF EXISTS group_membership CASCADE;

@@ -2,6 +2,20 @@
 
 
 -- ================================
+-- Drop Activities Table
+-- ================================
+DROP FUNCTION IF EXISTS set_activities_order_by;
+DROP TRIGGER IF EXISTS trg_set_activities_order_by;
+DROP TABLE IF EXISTS activities CASCADE;
+
+
+-- ================================
+-- Drop Assignments Table
+-- ================================
+DROP TABLE IF EXISTS assignments CASCADE;
+
+
+-- ================================
 -- Drop Profiles Table
 -- ================================
 DROP TABLE IF EXISTS group_membership CASCADE;
@@ -345,7 +359,7 @@ CREATE TABLE profiles (
 -- ==============================================
 
 CREATE TABLE groups (
-    group_id text PRIMARY KEY DEFAULT gen_random_uuid(), 
+    group_id    uuid PRIMARY KEY DEFAULT gen_random_uuid(), 
     title       TEXT NOT NULL,   
     
 
@@ -358,7 +372,7 @@ CREATE TABLE groups (
 -- File: 11-group-membership.sql
 create table group_membership (
     user_id text references profiles (user_id) not null,
-    group_id text references groups (group_id) not null,
+    group_id uuid references groups (group_id) not null,
     role text not null default 'member',
     
     active boolean default true,
@@ -366,6 +380,53 @@ create table group_membership (
     primary key (user_id, group_id)
 );
 
+
+-- File: 12-assignments.sql
+create table assignments (
+    
+    unit_id     uuid   not null references units(unit_id),
+    group_id    uuid   not null references groups(group_id), 
+   
+
+    active boolean default true,
+    created timestamp default now(),    
+    primary key (unit_id, group_id)
+);
+
+
+-- File: 13-activities.sql
+create table activities (
+    
+    activity_id     UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title           text,
+
+    lesson_id       uuid not null references lessons(lesson_id),
+    activity_type            text,
+    body            jsonb, 
+
+    active      boolean default true,
+    created     timestamp default now(),
+    created_by  text default 'auto',
+    order_by    int   
+    
+);
+
+-- Function to set default order_by
+CREATE OR REPLACE FUNCTION set_activities_order_by()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.order_by IS NULL THEN
+    SELECT COALESCE(MAX(order_by), 0) + 1 INTO NEW.order_by FROM activities;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger to set default order
+CREATE TRIGGER trg_set_activities_order_by
+BEFORE INSERT ON activities
+FOR EACH ROW
+EXECUTE FUNCTION set_activities_order_by();
 
 -- File: 99-seed.sql
 -- 01_insert_nc.sql
@@ -508,6 +569,8 @@ INSERT INTO groups (title, created_by) VALUES ('25-09A-DT', 'user_2yjidP4UdYKaAm
 ('25-09D-DT', 'user_2yjidP4UdYKaAmizJ9TzJvecPhw');
 
 
+-- Group Membership
+
 INSERT INTO group_membership (user_id, group_id, role) VALUES
 ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', (SELECT group_id FROM groups WHERE title = '25-09A-DT'), 'teacher'),
 ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', (SELECT group_id FROM groups WHERE title = '25-09B-DT'), 'teacher'),
@@ -515,4 +578,53 @@ INSERT INTO group_membership (user_id, group_id, role) VALUES
 ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', (SELECT group_id FROM groups WHERE title = '25-09D-DT'), 'teacher');
 
 
+-- Assignments
+
+INSERT INTO assignments (unit_id, group_id) VALUES
+(
+  (SELECT unit_id FROM units WHERE title = 'YR9 Design and Technology - Introduction to CAD'),
+  (SELECT group_id FROM groups WHERE title = '25-09A-DT')
+),
+(
+  (SELECT unit_id FROM units WHERE title = 'YR9 Design and Technology - Introduction to CAD'),
+  (SELECT group_id FROM groups WHERE title = '25-09B-DT')
+),
+(
+  (SELECT unit_id FROM units WHERE title = 'YR9 Design and Technology - Introduction to CAD'),
+  (SELECT group_id FROM groups WHERE title = '25-09C-DT')
+),
+(
+  (SELECT unit_id FROM units WHERE title = 'YR9 Design and Technology - Introduction to CAD'),
+  (SELECT group_id FROM groups WHERE title = '25-09D-DT')
+);
+
+
+INSERT INTO activities (lesson_id, title, activity_type, body) VALUES
+(
+  (SELECT lesson_id FROM lessons WHERE title = 'Lesson 1: Advanced CAD Techniques'),
+  'Keywords',
+  'keywords',
+  '[{"keyword":"CAD", "definition": "Computer Aided Design.  A software app that  helps you to design your ideas."}]'
+
+),
+(
+  (SELECT lesson_id FROM lessons WHERE title = 'Lesson 1: Advanced CAD Techniques'),
+  'Description',
+  'text',
+  '{"html": "<p>Hello, this is a <strong>Great</strong> description.</p>"}'
+
+),
+(
+  (SELECT lesson_id FROM lessons WHERE title = 'Lesson 1: Advanced CAD Techniques'),
+  'Description',
+  'video',
+  '{"url": "X8u3zhDUDzE"}'
+
+),
+(
+  (SELECT lesson_id FROM lessons WHERE title = 'Lesson 1: Advanced CAD Techniques'),
+  'Description',
+  'images',
+  '{"images": "X8u3zhDUDzE"}'
+)
 

@@ -138,9 +138,61 @@ INSERT INTO groups (title, created_by) VALUES ('25-09A-DT', 'user_2yjidP4UdYKaAm
 ('25-09D-DT', 'user_2yjidP4UdYKaAmizJ9TzJvecPhw');
 
 
+-- Group Membership
+
 INSERT INTO group_membership (user_id, group_id, role) VALUES
 ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', (SELECT group_id FROM groups WHERE title = '25-09A-DT'), 'teacher'),
 ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', (SELECT group_id FROM groups WHERE title = '25-09B-DT'), 'teacher'),
 ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', (SELECT group_id FROM groups WHERE title = '25-09C-DT'), 'teacher'),
 ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', (SELECT group_id FROM groups WHERE title = '25-09D-DT'), 'teacher');
 
+
+-- Assignments
+
+INSERT INTO assignments (unit_id, group_id) VALUES
+(
+  (SELECT unit_id FROM units WHERE title = 'YR9 Design and Technology - Introduction to CAD'),
+  (SELECT group_id FROM groups WHERE title = '25-09A-DT')
+),
+(
+  (SELECT unit_id FROM units WHERE title = 'YR9 Design and Technology - Introduction to CAD'),
+  (SELECT group_id FROM groups WHERE title = '25-09B-DT')
+),
+(
+  (SELECT unit_id FROM units WHERE title = 'YR9 Design and Technology - Introduction to CAD'),
+  (SELECT group_id FROM groups WHERE title = '25-09C-DT')
+),
+(
+  (SELECT unit_id FROM units WHERE title = 'YR9 Design and Technology - Introduction to CAD'),
+  (SELECT group_id FROM groups WHERE title = '25-09D-DT')
+);
+
+
+INSERT INTO activities (lesson_id, title, activity_type, body) VALUES
+(
+  (SELECT lesson_id FROM lessons WHERE title = 'Lesson 1: Advanced CAD Techniques'),
+  'Keywords',
+  'keywords',
+  '[{"keyword":"CAD", "definition": "Computer Aided Design.  A software app that  helps you to design your ideas."}]'
+
+),
+(
+  (SELECT lesson_id FROM lessons WHERE title = 'Lesson 1: Advanced CAD Techniques'),
+  'Description',
+  'text',
+  '{"html": "<p>Hello, this is a <strong>Great</strong> description.</p>"}'
+
+),
+(
+  (SELECT lesson_id FROM lessons WHERE title = 'Lesson 1: Advanced CAD Techniques'),
+  'Description',
+  'video',
+  '{"url": "X8u3zhDUDzE"}'
+
+),
+(
+  (SELECT lesson_id FROM lessons WHERE title = 'Lesson 1: Advanced CAD Techniques'),
+  'Description',
+  'images',
+  '{"images": "X8u3zhDUDzE"}'
+)

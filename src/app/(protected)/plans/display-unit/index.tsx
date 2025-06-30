@@ -19,7 +19,7 @@ import { Lesson, Lessons } from '@/actions/lessons/types';
 import { updateLesson } from '@/actions/lessons/updateLesson';
 import { Unit, Units } from '@/actions/units/types';
 import { updateUnit } from '@/actions/units/updateUnit';
-import { CoursesAtom, CriteriasAtom, CurrentDetailsObjectAtom, LearningObjectivesAtom, LessonsAtom, LOLessonsMapsAtom, UnitsAtom } from '@/atoms';
+import { AssignmentsAtom, CoursesAtom, CriteriasAtom, CurrentDetailsObjectAtom, GroupsAtom, LearningObjectivesAtom, LessonsAtom, LOLessonsMapsAtom, UnitsAtom } from '@/atoms';
 import EditLabel from '@/components/edit-label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAtom } from 'jotai';
@@ -38,6 +38,22 @@ import LessonList from './lesson-list';
 import DeleteUnitButton from './unit-btn-delete';
 
 import { v4 as uuidv4 } from 'uuid';
+import { Button } from "@/components/ui/button"
+import { CirclePlus } from "lucide-react"
+
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import MultiSelectCheckboxes from '@/components/multiselect';
+import { sync } from 'framer-motion';
+import { syncAssignments } from '@/actions/assignments/syncAssignments';
 
 
 interface DisplayUnitProps {
@@ -58,10 +74,14 @@ const DisplayUnit = () => {
     const [parentCourse, setParentCourse] = useState<null | Course>();
     const [unit, setUnit] = useState<null | Unit>(null);
     const [courses, setCourses] = useAtom(CoursesAtom);
+    const [assignments, setAssignments] = useAtom(AssignmentsAtom);
+
+    console.log("Assignments (client)", assignments)
 
     const [stateUnit, updateUnitToDB, isLoading] = useActionState(updateUnit, {data:null, error: null});
     const [stateLessonReorder, reorderLessonsToDB, isReordering] = useActionState(reorderLessons, {data:null, error: null});
   
+    
     // convert teh currentDetailsObject to a Unit
     // this is done to ensure that the unit is always a Unit type.
     // this is because the currentDetailsObject can be a Course or a Unit.
@@ -194,7 +214,7 @@ const DisplayUnit = () => {
           <TabsList>
             <TabsTrigger value="rubric">Rubric</TabsTrigger>
             <TabsTrigger value="lessons">Lessons</TabsTrigger>
-            <TabsTrigger value="Assignments">Assignments</TabsTrigger>
+            <TabsTrigger value="assignments">Assignments</TabsTrigger>
           </TabsList>
 
           <TabsContent value="rubric">
@@ -227,7 +247,8 @@ const DisplayUnit = () => {
           </TabsContent>
 
           <TabsContent value="assignments">
-            <div>Assignments</div>
+                {unit && <DisplayAssignments unit={unit}/>}
+            
           </TabsContent>
           
         </Tabs>
@@ -440,4 +461,90 @@ const DisplayCriteria = ({criteria}:{criteria: any}) => {
       <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out"><DeleteCriteriaButton criteria={criteria} /></div>
     </div>
   );
+}
+
+
+const DisplayAssignments = ({unit}:{unit: Unit}) => {
+
+
+  const [assignments, setAssignments] = useAtom(AssignmentsAtom);
+  const [groups, setGroups] = useAtom(GroupsAtom);
+  const [state, syncAssignment, pending] = useActionState(syncAssignments,{data:null, error: null} );
+
+  const handleAssignmentChange = (newGroups: string[]) => {
+    
+    console.log("New Assignments", newGroups);
+
+    const newAssignments = assignments ? [
+      // remove the existing
+      ...assignments?.filter(a => a.unit_id !== unit.unit_id),
+
+      // add the new groups
+      ...newGroups.map((ng) => ({
+        type:"assignment",
+        unit_id: unit.unit_id,
+        active: true,
+        
+        created: new Date(),
+        group_id: ng,
+        assignment_from: null,
+        unit_title: unit.title,
+        group_title: groups?.filter(g => g.group_id == ng)[0].title || ""
+      }))
+    ] : [];
+
+    
+    setAssignments(newAssignments);
+
+    startTransition(()=>{
+      syncAssignment({unitId: unit.unit_id, groupIds: newGroups});
+    })
+  };
+
+  useEffect(()=>{
+    // ignore the forst load.
+    if ((state.data === null && state.error === null))
+      return;
+
+    if (state.error){
+
+      // return correct state in 
+      setAssignments(state.data as any);
+
+      toast.error(`Error!: ${state.error}`, {
+        className: "bg-red-100 text-green-800 border border-green-300 font-semibold",
+      });
+      return;
+    } 
+
+    toast.success("Update saved");
+  }, [state]);  
+
+
+  return (<div>
+              <div className="flex flex-row">
+            
+
+          Edit Assignments 1<MultiSelectCheckboxes 
+            options={groups?.map(g => ({id: g.group_id, label: g.title || "", value:g.group_id})) || []} 
+            placeholder='Select Group' 
+            initialValues={assignments?.filter(a => a.unit_id == unit.unit_id).map((a) => a.group_id)} 
+            onSelectionChange={handleAssignmentChange}           
+          />
+            
+            </div>
+
+            <div className="flex flex-row gap-2">
+            {
+              // all groups assigned to this unit
+              assignments?.filter((a) => a.unit_id == unit.unit_id).map((a,i) => <div key={Math.random()} className="m-2 flex flex-col border-[0.5px] border-neutral-300 p-2 rounded-xl">
+                <div className="text-md ">{a.group_title}</div>
+                
+              </div>) 
+            }
+            </div>
+
+            
+            </div>
+            )
 }

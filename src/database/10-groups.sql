@@ -3,7 +3,7 @@
 -- ==============================================
 
 CREATE TABLE groups (
-    group_id text PRIMARY KEY DEFAULT gen_random_uuid(), 
+    group_id    uuid PRIMARY KEY DEFAULT gen_random_uuid(), 
     title       TEXT NOT NULL,   
     
 
