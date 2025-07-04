@@ -3,8 +3,8 @@
 -- ================================
 -- Drop Activities Table
 -- ================================
-DROP FUNCTION IF EXISTS set_activities_order_by;
-DROP TRIGGER IF EXISTS trg_set_activities_order_by;
+DROP FUNCTION IF EXISTS set_activities_order_by CASCADE;
+DROP TRIGGER IF EXISTS trg_set_activities_order_by on activities CASCADE;
 DROP TABLE IF EXISTS activities CASCADE;
 
 
