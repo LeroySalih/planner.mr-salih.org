@@ -173,7 +173,7 @@ INSERT INTO activities (lesson_id, title, activity_type, body) VALUES
   (SELECT lesson_id FROM lessons WHERE title = 'Lesson 1: Advanced CAD Techniques'),
   'Keywords',
   'keywords',
-  '[{"keyword":"CAD", "definition": "Computer Aided Design.  A software app that  helps you to design your ideas."}]'
+  '[{"id": "0", "keyword":"CAD", "definition": "Computer Aided Design.  A software app that  helps you to design your ideas."}]'
 
 ),
 (
