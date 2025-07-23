@@ -15,7 +15,7 @@ export const ActivitySchema = z.object({
   active: z.boolean(),
   created: z.coerce.date(), // accepts string or Date
   created_by: z.string(),
-  order_by: z.number().nullable(),
+  order_by: z.number(),
 });
 
 export const ActivitiesSchema = z.array(ActivitySchema);

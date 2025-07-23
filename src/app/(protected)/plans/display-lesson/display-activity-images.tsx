@@ -5,16 +5,16 @@ import "react-image-gallery/styles/css/image-gallery.css";
 
 const images = [
   {
-    original: "/content/activity/1/",
-    thumbnail: "/content/activity/1",
+    original: "/api/activity/1/",
+    thumbnail: "/api/activity/1",
   },
   {
-    original: "/content/activity/1",
-    thumbnail: "/content/activity/1",
+    original: "/api/activity/1",
+    thumbnail: "/api/activity/1",
   },
   {
-    original: "/content/activity/1",
-    thumbnail: "/content/activity/1",
+    original: "/api/activity/1",
+    thumbnail: "/api/activity/1",
   },
 ];
 

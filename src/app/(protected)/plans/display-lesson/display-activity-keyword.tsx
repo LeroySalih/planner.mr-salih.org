@@ -23,7 +23,13 @@ export default function KeywordDefinitionTable({
   activity,
   onEditingEnd,
 }: KeywordDefinitionTableProps) {
-  const [data, setData] = useState<KeywordDefinition[]>(activity.body)
+
+  if (!Array.isArray(activity?.body?.keywords)) {
+      activity.body = activity.body || {};
+      activity.body.keywords = [];
+  } 
+
+  const [data, setData] = useState<KeywordDefinition[]>(activity.body.keywords)
   const [editingCell, setEditingCell] = useState<{ id: string; field: "keyword" | "definition" } | null>(null)
   const [editValue, setEditValue] = useState("")
 
@@ -132,7 +138,7 @@ export default function KeywordDefinitionTable({
   useEffect(()=>{
     // only update when the user has disabled editing
     if (editing === false) {
-        const newActivity = Object.assign({}, activity, {body: data});
+        const newActivity = Object.assign({}, activity, {body: {keywords: data}});
 
         console.log("updating Activity", newActivity);
 
@@ -140,6 +146,8 @@ export default function KeywordDefinitionTable({
     }
   },[editing])
 
+  console.log("Activity:: Keywords", data);
+  
   return (
     <div className="w-full space-y-3">
       {editing && (

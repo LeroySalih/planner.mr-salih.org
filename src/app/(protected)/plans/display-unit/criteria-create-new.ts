@@ -1,7 +1,7 @@
 import { Course, Courses } from "@/actions/courses/types";
 import { Criteria, Criterias, CriteriaSchema } from "@/actions/criteria/types";
 
-import {nextOrderBy} from "./next-order-by"
+import {nextOrderBy} from "../../../../lib/next-order-by"
 import { v4 as uuidv4 } from 'uuid';
 
 export const createNewCriteria = (learning_objective_id: string, criteria: Criterias):Criteria => {

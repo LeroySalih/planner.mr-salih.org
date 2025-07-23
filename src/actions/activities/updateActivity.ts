@@ -32,8 +32,9 @@ export const updateActivity = async (prev: {data: any, error: any}, activity: Ac
             with updated as (
             update activities
             set BODY = $1,
-                activity_type = $2
-            where activity_id = $3
+                activity_type = $2,
+                order_by = $3
+            where activity_id = $4
             returning activity_id, title, lesson_id, activity_type, body, created_by, created,  active, order_by
                 
             )
@@ -43,7 +44,8 @@ export const updateActivity = async (prev: {data: any, error: any}, activity: Ac
         `
         console.log("query", query);
 
-        const result = await pool.query(query, [JSON.stringify(activity.body), activity.activity_type,  activity.activity_id]);
+        // update DB 
+        const result = await pool.query(query, [JSON.stringify(activity.body), activity.activity_type,  activity.order_by, activity.activity_id]);
 
         if (result.rowCount != 1){
             throw new Error(`Incorrect number of rows updated ${result.rowCount}`);

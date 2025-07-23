@@ -22,6 +22,7 @@ export const getActivities = async (): Promise<ReturnVal> => {
         const query = `
             select * 
             from activities 
+            where active = true
             order by order_by;
         `
         const result = await pool.query(query);

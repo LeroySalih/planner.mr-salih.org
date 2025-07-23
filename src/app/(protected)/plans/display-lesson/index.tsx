@@ -28,6 +28,7 @@ import DisplayActivityVideo from "./display-activity-video";
 
 import { DisplayActivityProps } from './types';
 import { DisplayActivity } from './display-activity';
+import AddActivityBtn from './activity-btn-add';
 
 interface DisplayLessonProps {
     
@@ -115,11 +116,18 @@ const DisplayLesson = () => {
           );
         })
     }
-    <div>Activities ({activities.filter(a => a.lesson_id === lesson?.lesson_id).length})</div>
-
-      {
-        activities.filter(a => a.lesson_id == lesson?.lesson_id).map((activity, i) => <DisplayActivity key={activity.activity_id} activity={activity}/>)
-      }
+    <div>
+      <div className="flex flex-row items-center"> 
+        <div className="grow flex flex-row items-center">Activities ({activities.filter(a => a.lesson_id === lesson?.lesson_id).length})</div>
+        <Button variant="outline">Add Activity</Button>
+        {lesson && <AddActivityBtn lesson={lesson}/>}
+      </div>
+      <div>
+        {
+          activities.sort((a, b)=> a.order_by - b.order_by).filter(a => a.lesson_id == lesson?.lesson_id).map((activity, i) => <DisplayActivity key={activity.activity_id} activity={activity}/>)
+        }
+       </div>
+      </div>
   </div>
 </>
 
