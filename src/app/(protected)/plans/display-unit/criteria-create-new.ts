@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const createNewCriteria = (learning_objective_id: string, criteria: Criterias):Criteria => {
     
   const order_by = nextOrderBy<Criteria>(criteria);
-  console.log("order_by", order_by);
+  //console.log("order_by", order_by);
 
   return CriteriaSchema.parse({
   criteria_id: uuidv4(),

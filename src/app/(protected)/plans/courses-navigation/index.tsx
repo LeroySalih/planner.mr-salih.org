@@ -29,11 +29,11 @@ const CoursesNavigation = ({ onChangeNavigation }: CoursesNavigationProps) => {
     const [currentDetailsObject, setCurrentDetailsObject] = useAtom(CurrentDetailsObjectAtom);
 
     const handleChangeNavigation = (object: null | Course | Unit | Lesson) => {
-        console.log("handleChangeNavigation", object)
+        //console.log("handleChangeNavigation", object)
         setCurrentDetailsObject(object)
     };
 
-    console.log("Courses:", courses);
+    //console.log("Courses:", courses);
   return (
     <div className="h-full w-full p-4 bg-white-100">
       <div className="text-3xl font-semibold leading-none tracking-tigh ml-4 flex flex-row items-center">

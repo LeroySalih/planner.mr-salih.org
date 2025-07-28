@@ -22,7 +22,7 @@ export type ReturnVal = z.infer<typeof ReturnValSchema>;
 
 export const updateCourse = async (prev: {data: any, error: any}, course: Course): Promise<ReturnVal> => {
     
-    console.log("updateCourse", prev, course);
+    //console.log("updateCourse", prev, course);
 
     //const {data, error} = await getCourses();
     let data = null;
@@ -44,7 +44,7 @@ export const updateCourse = async (prev: {data: any, error: any}, course: Course
             from updated
             left join ncs on updated.nc_id = ncs.nc_id;
         `
-        console.log("query", query);
+        //console.log("query", query);
 
         const result = await pool.query(query);
 
@@ -81,7 +81,7 @@ export const updateCourse = async (prev: {data: any, error: any}, course: Course
         }
     }
     finally {
-         console.log("Server Returning", {data, error});
+         //console.log("Server Returning", {data, error});
         return ReturnValSchema.parse({data, error});
        
         

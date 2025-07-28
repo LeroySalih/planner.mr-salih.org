@@ -20,7 +20,7 @@ const ReturnValSchema = z.object({
 
 export const addLesson = async (prev: {data: any, error: any}, lesson: Lesson) => {
     
-    console.log("addLesson", prev, lesson);
+    //console.log("addLesson", prev, lesson);
 
     //const {data, error} = await getCourses();
     let data = null;
@@ -37,7 +37,7 @@ export const addLesson = async (prev: {data: any, error: any}, lesson: Lesson) =
             SELECT inserted.*
             from inserted; 
         `
-        console.log("query", query);
+        //console.log("query", query);
 
         const result = await pool.query(query);
 
@@ -64,7 +64,7 @@ export const addLesson = async (prev: {data: any, error: any}, lesson: Lesson) =
         }
     }
     finally {
-         console.log("Server Returning", {data, error});
+         //console.log("Server Returning", {data, error});
         ReturnValSchema.parse({data, error});
        
         return {data, error};

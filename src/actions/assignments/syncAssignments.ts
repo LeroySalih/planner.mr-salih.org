@@ -28,7 +28,7 @@ const runDBTxn = async (unitId: string, groupIds: string[]) => {
         await client.query("BEGIN");
 
         // remove the existing LOLessonMaps for this lesson
-        console.log("Deleting", groupIds);
+        //console.log("Deleting", groupIds);
 
         // delete any assignments that are not in the groupIds
         await client.query(`
@@ -37,7 +37,7 @@ const runDBTxn = async (unitId: string, groupIds: string[]) => {
             ;`, [unitId, groupIds]);    
 
 
-        console.log("runDBTxn","Deleted groups" );
+        //console.log("runDBTxn","Deleted groups" );
 
         if (groupIds.length > 0) {   
         
@@ -50,9 +50,9 @@ const runDBTxn = async (unitId: string, groupIds: string[]) => {
                 WHERE a.group_id = g AND a.unit_id = $1);
             `;
 
-            console.log(query, [unitId, groupIds]);
+            //console.log(query, [unitId, groupIds]);
             await client.query(query, [unitId, groupIds]);
-            console.log("runDBTxn","Added groups" );
+            //console.log("runDBTxn","Added groups" );
 
         }
 
@@ -72,7 +72,7 @@ export const syncAssignments = async (
   {unitId, groupIds}: {unitId: string, groupIds: string[]},
 ) => {
 
-    console.log("syncAssignments: Syncing groups", groupIds);
+    //console.log("syncAssignments: Syncing groups", groupIds);
 
   const client = pool.connect();
 
@@ -98,7 +98,7 @@ export const syncAssignments = async (
 
     // fresh map rows for the UI
     
-    console.log("syncAssignments: Updated Assignments", data);
+    //console.log("syncAssignments: Updated Assignments", data);
   } catch (e) {
     error = (e as Error).message;
 
@@ -107,7 +107,7 @@ export const syncAssignments = async (
     data = prevMaps;
     if (prevErr) error += ` • ${prevErr}`;
   } finally {
-    console.log("Returning::::", {data, error})
+    //console.log("Returning::::", {data, error})
     //ReturnValSchema.parse({ data: "OK", error });
     return { data, error };
   }

@@ -32,14 +32,13 @@ export const DisplayActivity = ({activity:initialActivity}: {activity: Activity}
   const [editing, setEditing] = useState<boolean | null>(null);
 
   const handleEditingEnd = (newActivity: Activity) => {
-    
-    setEditing (false)
-    
+  
     // write the actiivty to UI
     const newActivities = activities.map((a) => a.activity_id === newActivity.activity_id ? newActivity : a)
     
-    console.log("New Activities", newActivity, newActivities);
+    //console.log("New Activities", newActivity, newActivities);
 
+    setActivity(newActivity);
     setActivities(newActivities);
 
     // save to DB
@@ -86,7 +85,7 @@ useEffect(()=>{
         return;
 
         if (state.error){
-            console.log("Add Unit Error", state.error);
+            //console.log("Add Unit Error", state.error);
             // return correct state in 
             setActivities(state.data as Activities);
 
@@ -114,13 +113,19 @@ useEffect(()=>{
     const newActivity = Object.assign({}, activity, {activity_type: newActivityType});
     
     setActivity(newActivity);
+    handleEditingEnd(newActivity);
 
   }
 
   const handleLabelChange = (newTitle: string) => {
     const newActivity = Object.assign({}, activity, {title: newTitle});
     setActivity(newActivity);
+    handleEditingEnd(newActivity);
   }
+
+
+
+  
 
   const handleLabelOnClick = () => {}
 
@@ -165,7 +170,7 @@ useEffect(()=>{
       </div>
 }
 
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-2 h-[100px] items-start">
         <Switch id="airplane-mode" checked={editing || false} onCheckedChange={handleEditingClick}/>
         <Label htmlFor="airplane-mode">Editing</Label>
       </div>

@@ -76,7 +76,7 @@ const DisplayUnit = () => {
     const [courses, setCourses] = useAtom(CoursesAtom);
     const [assignments, setAssignments] = useAtom(AssignmentsAtom);
 
-    console.log("Assignments (client)", assignments)
+    //console.log("Assignments (client)", assignments)
 
     const [stateUnit, updateUnitToDB, isLoading] = useActionState(updateUnit, {data:null, error: null});
     const [stateLessonReorder, reorderLessonsToDB, isReordering] = useActionState(reorderLessons, {data:null, error: null});
@@ -150,13 +150,13 @@ const DisplayUnit = () => {
         const unitLessons = lessons.filter(l => l.unit_id === unit?.unit_id)
             .sort((a, b) => a.order_by - b.order_by);
 
-          console.log("getLessons returning Unit Lessons", unitLessons);
+          //console.log("getLessons returning Unit Lessons", unitLessons);
           return unitLessons;
     };
 
     const handleOnReorder = (newOrder: Lesson[]) => {
         
-        console.log("Reordering Lessons", newOrder);
+        //console.log("Reordering Lessons", newOrder);
 
         const updatedLessons = newOrder.map((lesson, index) => ({ 
           ...lesson,
@@ -473,7 +473,7 @@ const DisplayAssignments = ({unit}:{unit: Unit}) => {
 
   const handleAssignmentChange = (newGroups: string[]) => {
     
-    console.log("New Assignments", newGroups);
+    //console.log("New Assignments", newGroups);
 
     const newAssignments = assignments ? [
       // remove the existing

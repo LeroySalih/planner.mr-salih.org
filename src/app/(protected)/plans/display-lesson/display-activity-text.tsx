@@ -4,7 +4,7 @@ import { DisplayActivityProps } from "./types";
 
 export const DisplayActivityText = ({activity, editing, onEditingEnd}: DisplayActivityProps) => {
 
-  console.log("Activity", activity.body.html)
+  //console.log("Activity", activity.body.html)
 
   const [content, setContent] = useState(activity.body.html);
 

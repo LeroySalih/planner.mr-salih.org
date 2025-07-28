@@ -26,7 +26,7 @@ export type ReturnVal = z.infer<typeof ReturnValSchema>;
 
 export const updateLearningObjective = async (prev: {data: any, error: any}, lo: LearningObjective): Promise<ReturnVal> => {
     
-    console.log("updateLearningObjective", prev, lo);
+    //console.log("updateLearningObjective", prev, lo);
 
     //const {data, error} = await getCourses();
     let data = null;
@@ -47,7 +47,7 @@ export const updateLearningObjective = async (prev: {data: any, error: any}, lo:
             SELECT updated.*
             from updated;
         `
-        console.log("query", query);
+        //console.log("query", query);
 
         const result = await pool.query(query);
 
@@ -74,7 +74,7 @@ export const updateLearningObjective = async (prev: {data: any, error: any}, lo:
         }
     }
     finally {
-         console.log("Server Returning", {data, error});
+         //console.log("Server Returning", {data, error});
         ReturnValSchema.parse({data, error});
        
         return {data, error};

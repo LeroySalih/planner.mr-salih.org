@@ -22,7 +22,7 @@ export type ReturnVal = z.infer<typeof ReturnValSchema>;
 
 export const addUnit = async (prev: {data: any, error: any}, unit: Unit) => {
     
-    console.log("addUnit", prev, unit);
+    //console.log("addUnit", prev, unit);
 
     //const {data, error} = await getCourses();
     let data = null;
@@ -97,11 +97,11 @@ LEFT JOIN courses AS c
 
 `
 
-        console.log("add unit query", query);
+        //console.log("add unit query", query);
 
         const result = await pool.query(query);
 
-        console.log("add unit result", result.rows)
+        //console.log("add unit result", result.rows)
 
         if (result.rowCount != 1){
             throw new Error(`Incorrect number of rows updated ${result.rowCount}`);
@@ -137,7 +137,7 @@ LEFT JOIN courses AS c
         }
     }
     finally {
-         console.log("Server Returning", {data, error});
+         //console.log("Server Returning", {data, error});
         ReturnValSchema.parse({data, error});
        
         return {data, error};

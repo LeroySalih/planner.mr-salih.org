@@ -47,7 +47,7 @@ export const getNCs = async (): Promise<ReturnVal> => {
         }
 
     } finally {
-        //console.log("getNCsByID: returns", data, error)
+        ////console.log("getNCsByID: returns", data, error)
         ReturnValSchema.parse({data, error});
         return {data, error}
     }

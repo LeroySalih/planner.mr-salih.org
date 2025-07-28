@@ -63,7 +63,7 @@ const EditLessonButton = ({lesson}:{lesson: Lesson | null}) => {
     // update the client UI
     // call the server update
 
-    console.log("Editing Lesson", newLesson);
+    //console.log("Editing Lesson", newLesson);
     
     /* Optinistic UI update */
     /* loop through prev, replace with new course from dlg */

@@ -38,7 +38,7 @@ export const getLessons = async (): Promise<ReturnVal> => {
         }
 
     } finally {
-        //console.log("getUnits: returns", data, error)
+        ////console.log("getUnits: returns", data, error)
         const result = ReturnValSchema.parse({data, error});
         return result;
     }

@@ -33,7 +33,7 @@ const DeleteLessonButton = ({lesson}: {lesson: Lesson}) => {
         if (state.data === null && state.error === null)
             return;
 
-        console.log("useEffect::delete returned from server", state)
+        //console.log("useEffect::delete returned from server", state)
         // something went wrong
         if (state.error){
             toast.error(`Error! ${state.error}`)

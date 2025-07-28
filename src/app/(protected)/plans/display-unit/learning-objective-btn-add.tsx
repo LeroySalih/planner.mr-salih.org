@@ -35,11 +35,11 @@ const AddLearningObjectiveBtn = ({unit}: {unit: Unit}) => {
 
     const newLearningObjective = createNewLearningObjective(unit!.unit_id, learningObjectives!);
     
-    console.log("Adding learning objective", newLearningObjective);
+    //console.log("Adding learning objective", newLearningObjective);
     
     /* Add a New Course */
     setLearningObjectives(prev => [...prev, newLearningObjective!]);
-    console.log("Lessons", learningObjectives);
+    //console.log("Lessons", learningObjectives);
 
     // update the server
     startTransition(()=>{
@@ -74,7 +74,7 @@ const AddLearningObjectiveBtn = ({unit}: {unit: Unit}) => {
 
 
   const handleLOsSelected = (selectedLOs: string[]) => {
-    console.log("Selected Learning Objectives:", selectedLOs);
+    //console.log("Selected Learning Objectives:", selectedLOs);
 
     if (!currentLesson?.lesson_id) {
       console.error("No current lesson id available");

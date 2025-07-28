@@ -22,7 +22,7 @@ export type ReturnVal = z.infer<typeof ReturnValSchema>;
 
 export const swapLessonOrder = async (prev: {data: any, error: any}, {from, to}: {from: Lesson, to: Lesson}): Promise<ReturnVal> => {
     
-    console.log("swapLessonOrder", prev, from, to);
+    //console.log("swapLessonOrder", prev, from, to);
 
     //const {data, error} = await getCourses();
     let data = null;
@@ -48,11 +48,11 @@ export const swapLessonOrder = async (prev: {data: any, error: any}, {from, to}:
             COMMIT;
         `
 
-        console.log("query", query);
+        //console.log("query", query);
 
         const result = await pool.query(query);
 
-        console.log("Rows", result.rows)
+        //console.log("Rows", result.rows)
 
         // only return courses if there is an issue.
         data = null;
@@ -73,7 +73,7 @@ export const swapLessonOrder = async (prev: {data: any, error: any}, {from, to}:
         }
     }
     finally {
-         console.log("Server Returning", {data, error});
+         //console.log("Server Returning", {data, error});
         ReturnValSchema.parse({data, error});
        
         return {data, error};

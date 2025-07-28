@@ -20,7 +20,7 @@ const ReturnValSchema = z.object({
 
 export const addCriteria = async (prev: {data: any, error: any}, criteria: Criteria) => {
     
-    console.log("addCriteria", prev, criteria);
+    //console.log("addCriteria", prev, criteria);
 
     //const {data, error} = await getCourses();
     let data = null;
@@ -37,7 +37,7 @@ export const addCriteria = async (prev: {data: any, error: any}, criteria: Crite
             SELECT inserted.*
             from inserted; 
         `
-        console.log("query", query);
+        //console.log("query", query);
 
         const result = await pool.query(query);
 
@@ -64,7 +64,7 @@ export const addCriteria = async (prev: {data: any, error: any}, criteria: Crite
         }
     }
     finally {
-         console.log("Server Returning", {data, error});
+         //console.log("Server Returning", {data, error});
         ReturnValSchema.parse({data, error});
        
         return {data, error};

@@ -42,9 +42,9 @@ export const getGroups = async (): Promise<ReturnVal> => {
         }
 
     } finally {
-        //console.log("getNCsByID: returns", data, error)
+        ////console.log("getNCsByID: returns", data, error)
         const result = ReturnValSchema.parse({data, error});
-        console.log("getGroups", result);
+        //console.log("getGroups", result);
         return result;
     }
 }

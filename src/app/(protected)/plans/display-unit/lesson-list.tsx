@@ -160,11 +160,11 @@ const DisplayLesson = ({index, lesson, onDragStart}: {index: number,  lesson:Les
 
   const handleLOAddedToLesson = (selectedValues: string[]) => {
 
-    console.log("Adding", selectedValues, "to lesson", lesson.lesson_id);
+    //console.log("Adding", selectedValues, "to lesson", lesson.lesson_id);
 
     
     // remove all LO for this lesson from the UI
-    console.log(loLessonMaps.length, "existing LO Lesson Maps");
+    //console.log(loLessonMaps.length, "existing LO Lesson Maps");
     const newloLessonMap =loLessonMaps.filter((loMap) => loMap.lesson_id !== lesson.lesson_id)
     
     
@@ -190,7 +190,7 @@ const DisplayLesson = ({index, lesson, onDragStart}: {index: number,  lesson:Les
 
     
     startTransition(() => {
-      console.log("Syncing LO Lesson Map to server", serverUpdate);
+      //console.log("Syncing LO Lesson Map to server", serverUpdate);
       syncLO({
         lessonId: lesson.lesson_id, 
         loLessonMaps: serverUpdate

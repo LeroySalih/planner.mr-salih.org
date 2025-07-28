@@ -28,7 +28,7 @@ const runDBTxn = async (lessonId: string, learningObjectiveIds: string[]) => {
         await client.query("BEGIN");
 
         // remove the existing LOLessonMaps for this lesson
-        console.log("Deleting", learningObjectiveIds);
+        //console.log("Deleting", learningObjectiveIds);
 
         await client.query(`
             DELETE FROM learning_objective_lesson_map
@@ -49,7 +49,7 @@ const runDBTxn = async (lessonId: string, learningObjectiveIds: string[]) => {
                 VALUES ${placeholders};
             `;
 
-            console.log("Inserting LOLessonMaps", query, values);
+            //console.log("Inserting LOLessonMaps", query, values);
                 
             await client.query(query, values);
         }
@@ -69,7 +69,7 @@ export const syncLOLessonMap = async (
   {lessonId, loLessonMaps}: {lessonId: string, loLessonMaps: LOLessonMap[]},
 ) => {
 
-    console.log("syncLOLessonMap: Syncing LOLessonsMaps", loLessonMaps);
+    //console.log("syncLOLessonMap: Syncing LOLessonsMaps", loLessonMaps);
     // ----------  build data & SQL -----------
   // const lessonIds = [...new Set(loLessonMaps.map(m => m.lesson_id))];   // dedup once
 
@@ -106,7 +106,7 @@ export const syncLOLessonMap = async (
 
     // fresh map rows for the UI
     
-    console.log("syncLOLessonMap: Updated LOLessonsMaps", data);
+    //console.log("syncLOLessonMap: Updated LOLessonsMaps", data);
   } catch (e) {
     error = (e as Error).message;
 

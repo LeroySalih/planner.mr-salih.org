@@ -29,11 +29,11 @@ const AddLessonBtn = ({unit}: {unit: Unit}) => {
 
     const newLesson = createNewLesson(unit!.unit_id, lessons!);
     
-    console.log("Adding lesson", newLesson);
+    //console.log("Adding lesson", newLesson);
     
     /* Add a New Course */
     setLessons(prev => [...prev, newLesson!]);
-    console.log("Lessons", lessons);
+    //console.log("Lessons", lessons);
 
     // update the server
     startTransition(()=>{

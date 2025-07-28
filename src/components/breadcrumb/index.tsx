@@ -21,7 +21,7 @@ const Breadcrumb = ({ breadcrumbs }: BreadcrumbProps) => {
     const handleUnitClick = () => {
         // Logic to handle course click, e.g., navigate to course page
         setPlanningDisplayMode("units")
-        console.log("Unit clicked:", breadcrumbs[0]);
+        //console.log("Unit clicked:", breadcrumbs[0]);
     }
 
     return (

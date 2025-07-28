@@ -21,7 +21,7 @@ const DeleteActivityButton = ({activity}: DeleteCourseButtonProps) => {
     
     const handleClick = () => {
 
-        console.log("Delete Acitvity Pressed")
+        //console.log("Delete Acitvity Pressed")
         if (isPending)
             return;
 
@@ -34,12 +34,12 @@ const DeleteActivityButton = ({activity}: DeleteCourseButtonProps) => {
     };
 
     useEffect(()=>{
-        console.log("useEffect::delete state", state)
+        //console.log("useEffect::delete state", state)
         // ignore first load
         if (state.data === null && state.error === null)
             return;
 
-        console.log("useEffect::delete returned from server", state)
+        //console.log("useEffect::delete returned from server", state)
         // something went wrong
         if (state.error){
             toast.error(`Error! ${state.error}`)

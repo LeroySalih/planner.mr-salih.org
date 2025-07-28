@@ -140,13 +140,13 @@ export default function KeywordDefinitionTable({
     if (editing === false) {
         const newActivity = Object.assign({}, activity, {body: {keywords: data}});
 
-        console.log("updating Activity", newActivity);
+        //console.log("updating Activity", newActivity);
 
         onEditingEnd?.(newActivity)
     }
   },[editing])
 
-  console.log("Activity:: Keywords", data);
+  //console.log("Activity:: Keywords", data);
   
   return (
     <div className="w-full space-y-3">

@@ -37,7 +37,7 @@ const MoveUpLessonButton = ({lesson, disabled}:MoveUpLessonButtonProps) => {
     // update the client UI
     // call the server update
 
-    //console.log("Editing Lesson", newLesson);
+    ////console.log("Editing Lesson", newLesson);
     
     /* Optinistic UI update */
     /* loop through prev, replace with new course from dlg */
@@ -49,7 +49,7 @@ const MoveUpLessonButton = ({lesson, disabled}:MoveUpLessonButtonProps) => {
       return;
     }
 
-    console.log("debug", lessons.filter(l => l.unit_id === dlgLesson.unit_id ));
+    //console.log("debug", lessons.filter(l => l.unit_id === dlgLesson.unit_id ));
 
     const temp_order = dlgLesson.order_by;
 
@@ -62,7 +62,7 @@ const MoveUpLessonButton = ({lesson, disabled}:MoveUpLessonButtonProps) => {
 
 
     if (to === null || to === undefined){
-      console.log("handleSwap - to is null or undefined", to);
+      //console.log("handleSwap - to is null or undefined", to);
       return;
     }
 
@@ -88,7 +88,7 @@ const MoveUpLessonButton = ({lesson, disabled}:MoveUpLessonButtonProps) => {
     
     // update the server
     startTransition(()=>{
-      console.log(`Swapping ${from.title} to ${from.order_by} from ${to.order_by}`)
+      //console.log(`Swapping ${from.title} to ${from.order_by} from ${to.order_by}`)
        swapLessonOrderToDB({from, to}!);
     })
     

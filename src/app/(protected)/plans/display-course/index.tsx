@@ -38,7 +38,7 @@ const DisplayCourse = () => {
     const  [course, setCourse] = useState<null | Course>(null);
     
     useEffect(()=>{
-      console.log("Display-Course - New Object Detected", currentDetailsObject)
+      //console.log("Display-Course - New Object Detected", currentDetailsObject)
       setCourse(currentDetailsObject as Course)
     },[currentDetailsObject]);
   

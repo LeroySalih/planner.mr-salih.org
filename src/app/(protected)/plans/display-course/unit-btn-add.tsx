@@ -41,7 +41,7 @@ const UnitBtnAdd = ({course}:{course:Course}) => {
             learning_objectives: [],
         });
 
-        console.log("Creating new unit", newUnit);
+        //console.log("Creating new unit", newUnit);
         return newUnit;
     };
 
@@ -92,7 +92,7 @@ const UnitBtnAdd = ({course}:{course:Course}) => {
         return;
 
         if (state.error){
-            console.log("Add Unit Error", state.error);
+            //console.log("Add Unit Error", state.error);
             // return correct state in 
             setUnits(state.data as Units);
 

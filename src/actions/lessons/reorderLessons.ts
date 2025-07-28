@@ -18,7 +18,7 @@ const ReturnValSchema = z.object({
 
 export const reorderLessons = async (prev: {data: any, error: any}, lessons: Lesson[]) => {
     
-    console.log("reorderLessons", prev, lessons);
+    //console.log("reorderLessons", prev, lessons);
 
     //const {data, error} = await getCourses();
     let data = null;
@@ -26,7 +26,7 @@ export const reorderLessons = async (prev: {data: any, error: any}, lessons: Les
 
     try{
 
-        console.log("reorderLessons: lessons", lessons.map(l => ({title: l.title,  order_by: l.order_by})));
+        //console.log("reorderLessons: lessons", lessons.map(l => ({title: l.title,  order_by: l.order_by})));
 
         const ids = lessons.map(lesson => `'${lesson.lesson_id}'`).join(", ");
         const cases = lessons.map((lesson, index) => `WHEN '${lesson.lesson_id}' THEN ${lesson.order_by}`)
@@ -45,7 +45,7 @@ export const reorderLessons = async (prev: {data: any, error: any}, lessons: Les
             from updated; 
         `
 
-        console.log("query", query);
+        //console.log("query", query);
 
         const result = await pool.query(query);
 
@@ -72,7 +72,7 @@ export const reorderLessons = async (prev: {data: any, error: any}, lessons: Les
         }
     }
     finally {
-         console.log("Server Returning", {data, error});
+         //console.log("Server Returning", {data, error});
         ReturnValSchema.parse({data, error});
        
         return {data, error};

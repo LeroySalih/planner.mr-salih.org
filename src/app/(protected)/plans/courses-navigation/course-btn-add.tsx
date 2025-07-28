@@ -28,7 +28,7 @@ const AddCourseBtn = () => {
 
     const newCourse = createNewCourse(courses);
     
-    console.log("Adding Course", newCourse);
+    //console.log("Adding Course", newCourse);
     
     /* Add a New Course to start of courses*/
     setCourses(prev => [newCourse, ...prev]);

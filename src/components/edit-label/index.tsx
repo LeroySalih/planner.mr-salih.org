@@ -36,14 +36,14 @@ const EditLabel = ({
         
         // if enter, update current current and parent
         if (event.key === 'Enter' ) {
-          //console.log('Enter key pressed!');
+          ////console.log('Enter key pressed!');
           setIsEditing(false);
           onLabelChange(value);
         }
 
         // if escape, revert
         if (event.key === 'Escape') {
-          //console.log('Enter key pressed!');
+          ////console.log('Enter key pressed!');
           setIsEditing(false);
           setValue(initialTitle);
           //onLabelChange(value);
@@ -78,7 +78,7 @@ const EditLabel = ({
       const timer = setTimeout(() => {
         editLabel.current?.focus();
         editLabel.current?.select();
-        console.log("Setting focus", editLabel.current)
+        //console.log("Setting focus", editLabel.current)
       }, 10);
       return () => clearTimeout(timer);
     }

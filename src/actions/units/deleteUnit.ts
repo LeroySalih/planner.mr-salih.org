@@ -22,7 +22,7 @@ export type ReturnVal = z.infer<typeof ReturnValSchema>;
 
 export const deleteUnit = async (prev: {data: any, error: any}, unit: Unit) => {
     
-    console.log("deleteUnit", prev, unit);
+    //console.log("deleteUnit", prev, unit);
 
     //const {data, error} = await getCourses();
     let data = null;
@@ -53,11 +53,11 @@ export const deleteUnit = async (prev: {data: any, error: any}, unit: Unit) => {
             left join learning_objectives lo on deleted.unit_id = lo.unit_id
             group by deleted.unit_id, deleted.title, deleted.course_id, deleted.tags, deleted.created_by, deleted.created, deleted.active, deleted.order_by, c.title;
         `
-        console.log("delete unit query", query);
+        //console.log("delete unit query", query);
 
         const result = await pool.query(query);
 
-        console.log("delete unit result", result.rows)
+        //console.log("delete unit result", result.rows)
 
         if (result.rowCount != 1){
             throw new Error(`Incorrect number of rows updated ${result.rowCount}`);
@@ -93,7 +93,7 @@ export const deleteUnit = async (prev: {data: any, error: any}, unit: Unit) => {
         }
     }
     finally {
-         console.log("Server Returning", {data, error});
+         //console.log("Server Returning", {data, error});
         ReturnValSchema.parse({data, error});
        
         return {data, error};

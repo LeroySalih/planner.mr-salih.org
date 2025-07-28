@@ -20,7 +20,7 @@ export type ReturnVal = z.infer<typeof ReturnValSchema>;
 
 export const updateActivity = async (prev: {data: any, error: any}, activity: Activity): Promise<ReturnVal> => {
     
-    console.log("updateActivity", prev, activity);
+    //console.log("updateActivity", prev, activity);
 
     //const {data, error} = await getCourses();
     let data = null;
@@ -42,7 +42,7 @@ export const updateActivity = async (prev: {data: any, error: any}, activity: Ac
             from updated
             ;
         `
-        console.log("query", query);
+        //console.log("query", query);
 
         // update DB 
         const result = await pool.query(query, [JSON.stringify(activity.body), activity.activity_type,  activity.order_by, activity.activity_id]);
@@ -70,7 +70,7 @@ export const updateActivity = async (prev: {data: any, error: any}, activity: Ac
         }
     }
     finally {
-         console.log("*** updateActivity Server Returning", {data, error});
+         //console.log("*** updateActivity Server Returning", {data, error});
         return ReturnValSchema.parse({data, error});
        
         

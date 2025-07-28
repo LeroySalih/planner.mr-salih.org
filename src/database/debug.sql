@@ -620,11 +620,13 @@ INSERT INTO activities (lesson_id, title, activity_type, body) VALUES
   'video',
   '{"url": "X8u3zhDUDzE"}'
 
-),
+)
+/*,
 (
   (SELECT lesson_id FROM lessons WHERE title = 'Lesson 1: Advanced CAD Techniques'),
   'Description',
   'images',
-  '{"images": "X8u3zhDUDzE"}'
+  '{"images": ["1000x600.jpg","1000x600.jpg" ]}'
 )
+*/
 

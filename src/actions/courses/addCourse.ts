@@ -20,7 +20,7 @@ const ReturnValSchema = z.object({
 
 export const addCourse = async (prev: {data: any, error: any}, course: Course) => {
     
-    console.log("addCourse", prev, course);
+    //console.log("addCourse", prev, course);
 
     //const {data, error} = await getCourses();
     let data = null;

@@ -42,9 +42,9 @@ export const getCourses = async (): Promise<ReturnVal> => {
         }
 
     } finally {
-        //console.log("getNCsByID: returns", data, error)
+        ////console.log("getNCsByID: returns", data, error)
         const result = ReturnValSchema.parse({data, error});
-        console.log("Result", result);
+        //console.log("Result", result);
         return result;
     }
 }

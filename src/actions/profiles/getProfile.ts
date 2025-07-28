@@ -18,7 +18,7 @@ export const getProfile = async (user_id: string): Promise<ReturnVal> => {
 
     let data = null, error = null;
 
-    console.log("getProfile: user_id", user_id);
+    //console.log("getProfile: user_id", user_id);
     
     try{
         const query = `
@@ -65,10 +65,10 @@ GROUP BY p.user_id, p.first_name, p.last_name;
         }
 
     } finally {
-        console.log("getProfile: returns", data, error)
+        //console.log("getProfile: returns", data, error)
         
         const result = ReturnValSchema.parse({data, error});
-        console.log("Result", result);
+        //console.log("Result", result);
         return result;
     }
 }

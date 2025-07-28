@@ -20,7 +20,7 @@ export type ReturnVal = z.infer<typeof ReturnValSchema>;
 
 export const deleteCriteria = async (prev: {data: any, error: any}, criteria: Criteria) => {
     
-    console.log("deleteCourse", prev, criteria);
+    //console.log("deleteCourse", prev, criteria);
 
     //const {data, error} = await getCourses();
     let data = null;
@@ -33,7 +33,7 @@ export const deleteCriteria = async (prev: {data: any, error: any}, criteria: Cr
             set active=false
             where criteria_id = '${criteria.criteria_id}'
         `
-        console.log("query", query);
+        //console.log("query", query);
 
         const result = await pool.query(query);
 
@@ -61,7 +61,7 @@ export const deleteCriteria = async (prev: {data: any, error: any}, criteria: Cr
     }
     finally {
         const retObj  = {data, error, timestamp: Date.now()}
-         console.log("Server Returning", retObj);
+         //console.log("Server Returning", retObj);
         ReturnValSchema.parse(retObj);
        
         return retObj;

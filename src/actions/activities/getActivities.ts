@@ -44,7 +44,7 @@ export const getActivities = async (): Promise<ReturnVal> => {
         }
 
     } finally {
-        console.log("getActivities: returns", data, error)
+        ////console.log("getActivities: returns", data, error)
         const result = ReturnValSchema.parse({data, error});
         return result;
     }

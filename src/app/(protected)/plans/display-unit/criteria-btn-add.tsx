@@ -34,7 +34,7 @@ const AddCriteriaBtn = ({lo}: AddCriteriaBtnProps) => {
 
     const newCriteria = createNewCriteria(lo.learning_objective_id, criterias!);
     
-    console.log("Adding criteria", newCriteria, "to", criterias);
+    //console.log("Adding criteria", newCriteria, "to", criterias);
     
     /* Add a New Criteria */
     setCriterias(prev => [...prev, newCriteria!]);

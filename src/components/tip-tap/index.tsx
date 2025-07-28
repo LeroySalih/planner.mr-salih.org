@@ -324,7 +324,7 @@ function EditorEvents({onEditingEnd}: {onEditingEnd: (s: string)=>void}) {
     if (!editor) return
 
     const handleBlur = () => {
-      console.log('Editor blurred!', editor.getHTML())
+      //console.log('Editor blurred!', editor.getHTML())
       onEditingEnd(editor.getHTML());
     }
 

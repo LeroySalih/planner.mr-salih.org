@@ -13,7 +13,7 @@ export type ReturnVal = z.infer<typeof ReturnValSchema>;
 export const createNewProfile = async (user_id: string, first_name: string, last_name: string): Promise<ReturnVal> => {
     let data = null, error = null;
 
-    console.log("createNewProfile: user_id", user_id);
+    //console.log("createNewProfile: user_id", user_id);
 
     try {
         const query = `
@@ -33,10 +33,10 @@ export const createNewProfile = async (user_id: string, first_name: string, last
             error = err.message;
         }
     } finally {
-        console.log("createNewProfile: returns", data, error);
+        //console.log("createNewProfile: returns", data, error);
         
         const result = ReturnValSchema.parse({data, error});
-        console.log("Result", result);
+        //console.log("Result", result);
         return result;
     }
 };

@@ -56,7 +56,7 @@ const RootLayout = async ({
     const {data: activities, error: activitiesError} = await getActivities();
 
 
-    console.log("Assignments", assignments, assignmentsError);
+    //console.log("Assignments", assignments, assignmentsError);
 
     const {userId} = await auth();
     let profile = userId ? await getProfile(userId) : null;

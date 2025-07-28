@@ -47,9 +47,9 @@ export const getAssignments = async (): Promise<ReturnVal> => {
         }
 
     } finally {
-        //console.log("getNCsByID: returns", data, error)
+        ////console.log("getNCsByID: returns", data, error)
         const result = ReturnValSchema.parse({data, error});
-        console.log("** getAssignments **", result);
+        //console.log("** getAssignments **", result);
         return result;
     }
 }
