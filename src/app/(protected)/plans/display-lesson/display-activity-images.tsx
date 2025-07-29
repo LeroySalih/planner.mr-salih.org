@@ -14,7 +14,7 @@ import { ChevronsRightLeft } from "lucide-react";
 
 
 
-const DisplayActivitiesImages = ({activity, editing}: DisplayActivityProps) => {
+const DisplayActivitiesImages = ({activity, editing, onEditingEnd}: DisplayActivityProps) => {
 
   const aId = activity.activity_id;
   const DOWNLOAD_PATH = `/api/activity/${aId}`;
@@ -24,7 +24,7 @@ const DisplayActivitiesImages = ({activity, editing}: DisplayActivityProps) => {
 
   return <div>Images
     <div className=" w-full">
-      { editing ? <DisplayEditFiles activity={activity} /> : <ImageGallery items={imageUrls || []} />}
+      { editing ? <DisplayEditFiles activity={activity} onEditingEnd={onEditingEnd}/> : <ImageGallery items={imageUrls || []} />}
     </div>
     </div>
 
@@ -34,7 +34,7 @@ const DisplayActivitiesImages = ({activity, editing}: DisplayActivityProps) => {
 export default DisplayActivitiesImages;
 
 
-const DisplayEditFiles = ({activity}: {activity: Activity}) => {
+const DisplayEditFiles = ({activity, onEditingEnd}: {activity: Activity, onEditingEnd: (a: Activity)=> void}) => {
 
   const aId = activity.activity_id;
   const DOWNLOAD_PATH = `/api/activity/${aId}`;
@@ -55,7 +55,7 @@ const DisplayEditFiles = ({activity}: {activity: Activity}) => {
 
   return <div>
 
-    {activity && <UrlManager activity={activity}  />}
+    {activity && <UrlManager activity={activity}  onEditingEnd={onEditingEnd}/>}
   
     {/* Implement file upload/editing functionality here */}
   </div>;

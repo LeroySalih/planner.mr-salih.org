@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { startTransition, useActionState, useEffect, useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import AddUrlForm from "./add-url-form"
 import UrlList from "./url-list"
@@ -9,7 +9,7 @@ import { ActivitiesAtom } from "@/atoms"
 import { useAtom } from "jotai"
 import { set } from "zod"
 import { toast } from "sonner"
-
+import { removeFile } from "@/actions/activities/removeFile"
 export interface UrlObject {
   id: number
   original: string
@@ -29,7 +29,7 @@ export default function UrlManager({ activity:initialActivity, onEditingEnd }: U
   const [urls, setUrls] = useState<UrlObject[] | null>(null);
 
   const [activities, setActivities] = useAtom(ActivitiesAtom);
-  
+  const [removeState, removeFileFromServer, isPending] = useActionState(removeFile, {data: null, error: null});
 
   const convertFileNameToUrls = (paths: UrlObject[]) => {
     
@@ -50,7 +50,7 @@ export default function UrlManager({ activity:initialActivity, onEditingEnd }: U
     
     //console.log("Setting initial URLs:", initialActivity?.body?.images);
 
-    setUrls(initialActivity?.body?.images ?  initialActivity?.body?.images : []);
+    //setUrls(initialActivity?.body?.images ?  initialActivity?.body?.images : []);
     
     setActivity(initialActivity);
 
@@ -61,8 +61,12 @@ export default function UrlManager({ activity:initialActivity, onEditingEnd }: U
     //console.log("Setting initial URLs:", initialActivity?.body?.images);
 
       setUrls(activity?.body?.images ?  activity?.body?.images : []);
+
+      if (activity){
+        onEditingEnd?.(activity);
+      }
     
-      setActivity(activity);
+      //setActivity(activity);
 
     },[activity]);
 
@@ -70,14 +74,13 @@ export default function UrlManager({ activity:initialActivity, onEditingEnd }: U
 
   const updateUrls = (newUrls: UrlObject[]) => {
 
-    setUrls(newUrls);
+    // setUrls(newUrls);
 
     const newActivity = Object.assign({}, activity, {body: {...activity.body, images: newUrls}});
 
     //console.log("New Activity Image URLs:", newActivity);
     setActivity(newActivity);
-    onEditingEnd?.(newActivity);
-  
+    
   }
 
   const uploadFiles = async (acceptedFiles: File[]) => {
@@ -155,8 +158,31 @@ export default function UrlManager({ activity:initialActivity, onEditingEnd }: U
     if (!urls)
       return;
 
-    updateUrls(urls.filter((url) => url.id !== id))
+    
+    const removedUrl = urls.find((url) => url.id === id)?.original;
+    const updatedUrls = urls.filter((url) => url.id !== id);  
+
+    
+    startTransition (async ()=>{
+      removedUrl && removeFileFromServer({activityId: activity.activity_id, fileName: removedUrl  });  
+    });
+
+    // update the activity in db and ui
+    updateUrls(updatedUrls);
   }
+
+  useEffect(()=>{
+
+    if (removeState.error) {
+      toast.error("Error removing file: " + removeState.error, {
+        duration: 5000
+      });
+    } else if (removeState.data) {
+      toast.success("File removed successfully: " + removeState.data, {
+        duration: 3000
+      });
+    }
+  }, [removeState])
 
   const handleReorderUrls = (newUrls: UrlObject[]) => {
     updateUrls(newUrls)
