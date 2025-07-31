@@ -25,7 +25,7 @@ export default function UrlList({ activity, onRemoveUrl, onReorderUrls }: UrlLis
   }
 
   const imagesTpoUrls = (activity: Activity) => {
-    // console.log("imagesTpoUrls::", activity.body?.images);
+    console.log("imagesTpoUrls::", activity.body?.images);
     return activity.body?.images.map((image: UrlObject, index: number) => ({
       id: index,
       original: imageToUrl(image.original),

@@ -1,0 +1,58 @@
+const fs = require('fs');
+const path = require('path');
+
+const validExtensions = ['.js', '.ts', '.jsx', '.tsx'];
+
+function isCodeFile(filename) {
+  return validExtensions.includes(path.extname(filename));
+}
+
+function processFile(filePath) {
+  const original = fs.readFileSync(filePath, 'utf8');
+  const lines = original.split('\n');
+
+  let modified = false;
+  const updatedLines = lines.map((line) => {
+    const trimmed = line.trimStart();
+
+    // Skip already commented lines
+    if (trimmed.startsWith('//')) return line;
+
+    // Match console.log that isn't already commented
+    if (trimmed.includes('// // console.log')) {
+      const newLine = line.replace(/(console\.log.*)/, '// $1');
+      modified = true;
+      return newLine;
+    }
+
+    return line;
+  });
+
+  if (modified) {
+    fs.writeFileSync(filePath + '.bak', original); // Backup
+    fs.writeFileSync(filePath, updatedLines.join('\n'));
+    // console.log(`Updated: ${filePath}`);
+  }
+}
+
+function scanDirectory(dirPath) {
+  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const fullPath = path.join(dirPath, entry.name);
+    if (entry.isDirectory()) {
+      scanDirectory(fullPath);
+    } else if (entry.isFile() && isCodeFile(entry.name)) {
+      processFile(fullPath);
+    }
+  }
+}
+
+// === Usage ===
+const targetDir = process.argv[2];
+if (!targetDir) {
+  console.error('Usage: node replace-console-log.js <directory>');
+  process.exit(1);
+}
+
+scanDirectory(path.resolve(targetDir));
