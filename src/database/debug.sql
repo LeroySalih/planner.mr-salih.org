@@ -480,47 +480,55 @@ INSERT INTO nc_items (nc_id, item_text, category) VALUES
 INSERT INTO courses (title, tags, nc_id) VALUES
 ('YR7 Design and Technology', '{ks3, yr7, dt}', (SELECT nc_id FROM ncs WHERE title = 'KS3 Design and Technology')),
 ('YR8 Design and Technology', '{ks3, yr8, dt}', (SELECT nc_id FROM ncs WHERE title = 'KS3 Design and Technology')),
-('YR9 Design and Technology', '{ks3, yr9, dt}', (SELECT nc_id FROM ncs WHERE title = 'KS3 Design and Technology'));
+('YR9 Design and Technology', '{ks3, yr9, dt}', (SELECT nc_id FROM ncs WHERE title = 'KS3 Design and Technology')),
+('YR10 Design and Technology', '{ks4, yr10, dt}', (SELECT nc_id FROM ncs WHERE title = 'KS4 Design and Technology'));
 
 
 -- 04_insert_units.sql
 -- Units for each course
 
 INSERT INTO units (title, tags, course_id) VALUES
-('YR7 Design and Technology - Introduction to Design', '{ks3, yr7, dt}', (SELECT course_id FROM courses WHERE title = 'YR7 Design and Technology')),
-('YR7 Design and Technology - Introduction to Electronics', '{ks3, yr7, dt}', (SELECT course_id FROM courses WHERE title = 'YR7 Design and Technology')),
-('YR8 Design and Technology - Introduction to Electronics', '{ks3, yr8, dt}', (SELECT course_id FROM courses WHERE title = 'YR8 Design and Technology')),
-('YR8 Design and Technology - Introduction to CAD', '{ks3, yr8, dt}', (SELECT course_id FROM courses WHERE title = 'YR8 Design and Technology')),
-('YR9 Design and Technology - Introduction to CAD', '{ks3, yr9, dt}', (SELECT course_id FROM courses WHERE title = 'YR9 Design and Technology')),
-('YR9 Design and Technology - Introduction to Electronics', '{ks3, yr9, dt}', (SELECT course_id FROM courses WHERE title = 'YR9 Design and Technology'));
+('Shipping Container Houses', '{ks3, yr7, dt}', (SELECT course_id FROM courses WHERE title = 'YR7 Design and Technology')),
+('Candle Holders', '{ks3, yr7, dt}', (SELECT course_id FROM courses WHERE title = 'YR7 Design and Technology')),
+('Microbit Cars', '{ks3, yr8, dt}', (SELECT course_id FROM courses WHERE title = 'YR8 Design and Technology')),
+('Materials', '{ks4, yr10, dt}', (SELECT course_id FROM courses WHERE title = 'YR10 Design and Technology')),
+('Design Processes', '{ks4, yr10, dt}', (SELECT course_id FROM courses WHERE title = 'YR10 Design and Technology')),
+('Processes', '{ks4, yr10, dt}', (SELECT course_id FROM courses WHERE title = 'YR10 Design and Technology'));
 
 
 -- 05_insert_learning_objectives.sql
 -- Learning objectives for YR7 Design
+-- (match to an existing unit: 'Shipping Container Houses')
 
 INSERT INTO learning_objectives (title, tags, unit_id) VALUES
-('TBAT Understand User Needs', '{}', (SELECT unit_id FROM units WHERE title = 'YR7 Design and Technology - Introduction to Design')),
-('TBAT Explore Design Ideas', '{}', (SELECT unit_id FROM units WHERE title = 'YR7 Design and Technology - Introduction to Design')),
-('TBAT Communicate Designs', '{}', (SELECT unit_id FROM units WHERE title = 'YR7 Design and Technology - Introduction to Design'));
+('TBAT Understand User Needs', '{}', (SELECT unit_id FROM units WHERE title = 'Shipping Container Houses')),
+('TBAT Explore Design Ideas', '{}', (SELECT unit_id FROM units WHERE title = 'Shipping Container Houses')),
+('TBAT Communicate Designs', '{}', (SELECT unit_id FROM units WHERE title = 'Shipping Container Houses'));
 
 
 -- 06_insert_lessons.sql
 -- Lessons for each unit
+-- Map lessons to existing units:
+--  - YR7 design lessons  -> 'Shipping Container Houses'
+--  - YR7/YR8 electronics -> 'Microbit Cars'
+--  - YR8 CAD             -> 'Design Processes'
+--  - YR9 CAD             -> 'Design Processes'
+--  - YR9 electronics     -> 'Processes'
 
 INSERT INTO lessons (title, tags, unit_id) VALUES
-('Lesson 1: Introduction to Design Principles', '{ks3, yr7, dt}', (SELECT unit_id FROM units WHERE title = 'YR7 Design and Technology - Introduction to Design')),
-('Lesson 2: Exploring User Needs', '{ks3, yr7, dt}', (SELECT unit_id FROM units WHERE title = 'YR7 Design and Technology - Introduction to Design')),
-('Lesson 3: Sketching and Prototyping', '{ks3, yr7, dt}', (SELECT unit_id FROM units WHERE title = 'YR7 Design and Technology - Introduction to Design')),
-('Lesson 1: Basics of Electronics', '{ks3, yr7, dt}', (SELECT unit_id FROM units WHERE title = 'YR7 Design and Technology - Introduction to Electronics')),
-('Lesson 2: Circuit Design', '{ks3, yr7, dt}', (SELECT unit_id FROM units WHERE title = 'YR7 Design and Technology - Introduction to Electronics')),
-('Lesson 1: Introduction to Electronics', '{ks3, yr8, dt}', (SELECT unit_id FROM units WHERE title = 'YR8 Design and Technology - Introduction to Electronics')),
-('Lesson 2: Advanced Circuit Design', '{ks3, yr8, dt}', (SELECT unit_id FROM units WHERE title = 'YR8 Design and Technology - Introduction to Electronics')),
-('Lesson 1: Basics of CAD', '{ks3, yr8, dt}', (SELECT unit_id FROM units WHERE title = 'YR8 Design and Technology - Introduction to CAD')),
-('Lesson 2: 3D Modelling', '{ks3, yr8, dt}', (SELECT unit_id FROM units WHERE title = 'YR8 Design and Technology - Introduction to CAD')),
-('Lesson 1: Advanced CAD Techniques', '{ks3, yr9, dt}', (SELECT unit_id FROM units WHERE title = 'YR9 Design and Technology - Introduction to CAD')),
-('Lesson 2: CAD for Product Design', '{ks3, yr9, dt}', (SELECT unit_id FROM units WHERE title = 'YR9 Design and Technology - Introduction to CAD')),
-('Lesson 1: Advanced Electronics', '{ks3, yr9, dt}', (SELECT unit_id FROM units WHERE title = 'YR9 Design and Technology - Introduction to Electronics')),
-('Lesson 2: Electronics in Real-World Applications', '{ks3, yr9, dt}', (SELECT unit_id FROM units WHERE title = 'YR9 Design and Technology - Introduction to Electronics'));
+('Lesson 1: Introduction to Design Principles', '{ks3, yr7, dt}', (SELECT unit_id FROM units WHERE title = 'Shipping Container Houses')),
+('Lesson 2: Exploring User Needs', '{ks3, yr7, dt}', (SELECT unit_id FROM units WHERE title = 'Shipping Container Houses')),
+('Lesson 3: Sketching and Prototyping', '{ks3, yr7, dt}', (SELECT unit_id FROM units WHERE title = 'Shipping Container Houses')),
+('Lesson 1: Basics of Electronics', '{ks3, yr7, dt}', (SELECT unit_id FROM units WHERE title = 'Microbit Cars')),
+('Lesson 2: Circuit Design', '{ks3, yr7, dt}', (SELECT unit_id FROM units WHERE title = 'Microbit Cars')),
+('Lesson 1: Introduction to Electronics', '{ks3, yr8, dt}', (SELECT unit_id FROM units WHERE title = 'Microbit Cars')),
+('Lesson 2: Advanced Circuit Design', '{ks3, yr8, dt}', (SELECT unit_id FROM units WHERE title = 'Microbit Cars')),
+('Lesson 1: Basics of CAD', '{ks3, yr8, dt}', (SELECT unit_id FROM units WHERE title = 'Design Processes')),
+('Lesson 2: 3D Modelling', '{ks3, yr8, dt}', (SELECT unit_id FROM units WHERE title = 'Design Processes')),
+('Lesson 1: Advanced CAD Techniques', '{ks3, yr9, dt}', (SELECT unit_id FROM units WHERE title = 'Design Processes')),
+('Lesson 2: CAD for Product Design', '{ks3, yr9, dt}', (SELECT unit_id FROM units WHERE title = 'Design Processes')),
+('Lesson 1: Advanced Electronics', '{ks3, yr9, dt}', (SELECT unit_id FROM units WHERE title = 'Processes')),
+('Lesson 2: Electronics in Real-World Applications', '{ks3, yr9, dt}', (SELECT unit_id FROM units WHERE title = 'Processes'));
 
 
 -- 07_insert_criteria.sql
@@ -558,7 +566,6 @@ INSERT INTO learning_objective_lesson_map (learning_objective_id, lesson_id) VAL
  (SELECT lesson_id FROM lessons WHERE title = 'Lesson 1: Basics of CAD'));
 
 
-
 -- Set Up USers
 INSERT INTO profiles (user_id, is_teacher, first_name, last_name) VALUES ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', true, 'Leroy', 'Salih');
 
@@ -579,22 +586,23 @@ INSERT INTO group_membership (user_id, group_id, role) VALUES
 
 
 -- Assignments
+-- (use an existing unit: 'Design Processes' for YR9 work)
 
 INSERT INTO assignments (unit_id, group_id) VALUES
 (
-  (SELECT unit_id FROM units WHERE title = 'YR9 Design and Technology - Introduction to CAD'),
+  (SELECT unit_id FROM units WHERE title = 'Design Processes'),
   (SELECT group_id FROM groups WHERE title = '25-09A-DT')
 ),
 (
-  (SELECT unit_id FROM units WHERE title = 'YR9 Design and Technology - Introduction to CAD'),
+  (SELECT unit_id FROM units WHERE title = 'Design Processes'),
   (SELECT group_id FROM groups WHERE title = '25-09B-DT')
 ),
 (
-  (SELECT unit_id FROM units WHERE title = 'YR9 Design and Technology - Introduction to CAD'),
+  (SELECT unit_id FROM units WHERE title = 'Design Processes'),
   (SELECT group_id FROM groups WHERE title = '25-09C-DT')
 ),
 (
-  (SELECT unit_id FROM units WHERE title = 'YR9 Design and Technology - Introduction to CAD'),
+  (SELECT unit_id FROM units WHERE title = 'Design Processes'),
   (SELECT group_id FROM groups WHERE title = '25-09D-DT')
 );
 
@@ -620,13 +628,6 @@ INSERT INTO activities (lesson_id, title, activity_type, body) VALUES
   'video',
   '{"url": "X8u3zhDUDzE"}'
 
-)
-/*,
-(
-  (SELECT lesson_id FROM lessons WHERE title = 'Lesson 1: Advanced CAD Techniques'),
-  'Description',
-  'images',
-  '{"images": ["1000x600.jpg","1000x600.jpg" ]}'
-)
-*/
+);
+
 

@@ -11,8 +11,7 @@ const ReturnValSchema = z.object({
         LessonSchema,
         LessonsSchema
     ]),
-    error: z.string().nullable(),
-    timestamp: z.number()
+    error: z.string().nullable()
 });
 
 export type ReturnVal = z.infer<typeof ReturnValSchema>;
@@ -59,7 +58,7 @@ export const deleteLesson = async (prev: {data: any, error: any}, lesson: Lesson
         }
     }
     finally {
-        const retObj  = {data, error, timestamp: Date.now()}
+        const retObj  = {data, error}
          //console.log("Server Returning", retObj);
         ReturnValSchema.parse(retObj);
        

@@ -29,6 +29,7 @@ import DisplayActivityVideo from "./display-activity-video";
 import { DisplayActivityProps } from './types';
 import { DisplayActivity } from './display-activity';
 import AddActivityBtn from './activity-btn-add';
+import DeleteLessonBtn from './lesson-btn-delete';
 
 interface DisplayLessonProps {
     
@@ -81,6 +82,10 @@ const DisplayLesson = () => {
     <div className="text-3xl font-bold flex flex-row">
       <BookOpen className="w-6 h-6 text-blue-500 mr-2" />
       {lesson?.title}
+    </div>
+
+    <div>
+      {lesson && <DeleteLessonBtn lesson={lesson} onDelete={()=>{}}/>}
     </div>
   </div>
 

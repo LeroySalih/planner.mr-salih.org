@@ -16,4 +16,4 @@ done
 
 echo "All matching .sql files have been combined into debug.sql"
 # Run the SQL script with psql
-psql ON_ERROR_STOP=1 -h localhost -U dbuser -d course_planner -f debug.sql || exit 1
+psql ON_ERROR_STOP=1 -h localhost -U dbuser -d planner -f debug.sql || exit 1

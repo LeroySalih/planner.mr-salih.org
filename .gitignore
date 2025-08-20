@@ -2,7 +2,7 @@
 
 # dependencies
 /node_modules
-/db_data
+/db_data/
 /.pnp
 .pnp.*
 .yarn/*
@@ -44,3 +44,6 @@ next-env.d.ts
 
 
 
+
+# clerk configuration (can include secrets)
+/.clerk/
