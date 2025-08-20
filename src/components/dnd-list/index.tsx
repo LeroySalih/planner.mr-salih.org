@@ -104,8 +104,10 @@ function SortableItem({
   };
 
   // Clone child to attach container ref + animated style.
+  // @ts-ignore
   const mergedStyle = { ...(child.props?.style ?? {}), ...style };
   const cloned = React.cloneElement(child, {
+    //@ts-ignore
     ref: setNodeRef,
     style: mergedStyle,
   });
@@ -137,6 +139,7 @@ export default function SortableList({
 
   // Extract stable IDs from `data-id` (fallback to React key for dev convenience)
   const childIds = childArray.map((el, idx) => {
+    //@ts-ignore
     const dataId = el.props?.['data-id'] as string | undefined;
     if (!dataId && el.key == null) {
       throw new Error(
@@ -159,6 +162,7 @@ export default function SortableList({
   const childMap = useMemo(() => {
     const m = new Map<string, React.ReactElement>();
     childArray.forEach((el) => {
+        //@ts-ignore
       const id = (el.props?.['data-id'] as string | undefined) ?? String(el.key);
       m.set(id, el);
     });
