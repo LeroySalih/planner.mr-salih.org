@@ -14,7 +14,8 @@ type EditLabelProps = {
      initialTitle: string, 
      onLabelChange:(label: string)=>void, 
      onClick: () => void,
-     allowEdits?: boolean
+     allowEdits?: boolean,
+     allowEditOnClick?: boolean,
      editClassName?: string, 
      displayClassName?: string
 }
@@ -25,7 +26,9 @@ const EditLabel = ({
         onClick = () => {}, 
         editClassName = defaultEditStyle, 
         displayClassName = defaultDisplayStyle, 
-        allowEdits = true}: EditLabelProps) => {
+        allowEdits = true,
+        allowEditOnClick = false
+      }: EditLabelProps) => {
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [value, setValue] = useState<string>(initialTitle);
@@ -65,7 +68,13 @@ const EditLabel = ({
     }
 
     const handleOnClick = () => {
-       onClick && onClick();
+       
+      if (allowEditOnClick) {
+        handleOnEdit();
+      }
+
+      onClick && onClick();
+
     }
 
     useEffect(()=>{
@@ -73,17 +82,16 @@ const EditLabel = ({
     }, [initialTitle])
 
     // ✅ Focus and select when input is rendered
-  useEffect(() => {
-    if (isEditing) {
-      const timer = setTimeout(() => {
-        editLabel.current?.focus();
-        editLabel.current?.select();
-        //console.log("Setting focus", editLabel.current)
-      }, 10);
-      return () => clearTimeout(timer);
-    }
-  }, [isEditing]);
-
+    useEffect(() => {
+      if (isEditing) {
+        const timer = setTimeout(() => {
+          editLabel.current?.focus();
+          editLabel.current?.select();
+          //console.log("Setting focus", editLabel.current)
+        }, 10);
+        return () => clearTimeout(timer);
+      }
+    }, [isEditing]);
 
     if (!isEditing){
         return <div className="flex flex-row items-center relative group">

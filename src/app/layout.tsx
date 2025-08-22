@@ -31,6 +31,7 @@ import { createNewProfile } from "@/actions/profiles/createNewProfile";
 import { getAssignments } from "@/actions/assignments/getAssignments";
 import { getGroups } from "@/actions/groups/getGroups";
 import { getActivities } from "@/actions/activities/getActivities";
+import MobileConsole from "@/components/mobile-console";
 
 export const metadata: Metadata = {
   title: "Course Planner",
@@ -94,6 +95,7 @@ const RootLayout = async ({
       initialAssignments={assignments}
       initialGroups={groups}
       > 
+        <MobileConsole/>
         <div className="flex flex-col h-screen overflow-hidden">
           <div className="p-4 flex flex-row items-center  fixed top-0 left-0 right-0 z-50 bg-slate-100">
             <div>Planner</div>

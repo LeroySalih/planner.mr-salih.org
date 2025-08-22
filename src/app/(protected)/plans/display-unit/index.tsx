@@ -202,6 +202,7 @@ const DisplayUnit = () => {
           <NotebookText className="w-6 h-6 text-blue-500 mr-2" />
           <EditLabel initialTitle={unit?.title || ""} 
             onLabelChange={handleTitleChange } 
+            allowEditOnClick={true}
             onClick={()=>{}}/>
         </div>
       <div>
@@ -322,9 +323,10 @@ const DisplayLearningObjective = ({lo, index}:{lo:LearningObjective, index:strin
                 <div className="font-bold flex flex-row items-center group">
                   <EditLabel initialTitle={lo.title} 
                     onLabelChange={handleLabelChange} 
-                    onClick={()=>{} }/>
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out"><DeleteLearningObjectiveButton lo={lo} /></div>
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out"><AddCriteriaBtn lo={lo} /></div>
+                    onClick={()=>{} }
+                    allowEditOnClick={true}/>
+                  <div className="group-hover:opacity-100 transition-opacity duration-200 ease-in-out"><DeleteLearningObjectiveButton lo={lo} /></div>
+                  <div className="group-hover:opacity-100 transition-opacity duration-200 ease-in-out"><AddCriteriaBtn lo={lo} /></div>
                 </div>
                 <div className="text-[8pt] border-[0.5] border-neutral-300 bg-neutral-100 px-2 rounded-full ">
                   {loLesonsMaps.filter(lom => lom.learning_objective_id === lo.learning_objective_id).length} 
@@ -457,7 +459,9 @@ const DisplayCriteria = ({criteria}:{criteria: any}) => {
       <div><EditLabel 
         initialTitle={criteria.title} 
         onClick={()=>{}} 
-        onLabelChange={handleLabelChange} /></div>
+        onLabelChange={handleLabelChange} 
+        allowEditOnClick={true}
+        /></div>
       <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out"><DeleteCriteriaButton criteria={criteria} /></div>
     </div>
   );

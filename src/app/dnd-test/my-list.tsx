@@ -6,7 +6,9 @@ import { useState } from 'react';
 
 type Item = { id: string; title: string, order: number };
 
-export default function MyList() {
+
+export default function MyList({}) {
+  
   const [items, setItems] = useState<Item[]>([
     { id: 'a', title: 'Task 0', order: 0 },
     { id: 'b', title: 'Task 1', order: 1 },

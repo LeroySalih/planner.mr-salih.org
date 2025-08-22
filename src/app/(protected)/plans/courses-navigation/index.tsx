@@ -29,7 +29,7 @@ const CoursesNavigation = ({ onChangeNavigation }: CoursesNavigationProps) => {
     const [currentDetailsObject, setCurrentDetailsObject] = useAtom(CurrentDetailsObjectAtom);
 
     const handleChangeNavigation = (object: null | Course | Unit | Lesson) => {
-        //console.log("handleChangeNavigation", object)
+        console.log("handleChangeNavigation", object)
         setCurrentDetailsObject(object)
     };
 
@@ -53,7 +53,9 @@ const CoursesNavigation = ({ onChangeNavigation }: CoursesNavigationProps) => {
                         <div>
                             
                             {
-                               units.filter(u => u.course_id === c.course_id).map((u, i) => (
+                               units.filter(u => u.course_id === c.course_id)
+                               .sort((a, b) => a.order_by - b.order_by)
+                               .map((u, i) => (
                                <details  key={u.unit_id} className="text-lg flex flex-col gap-4 text-sm 
                                         align-middle p-2  border-[0.5px]  m-2 group relative
                                         height-full+

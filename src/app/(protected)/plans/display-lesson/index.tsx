@@ -30,6 +30,9 @@ import { DisplayActivityProps } from './types';
 import { DisplayActivity } from './display-activity';
 import AddActivityBtn from './activity-btn-add';
 import DeleteLessonBtn from './lesson-btn-delete';
+import EditLabel from '@/components/edit-label';
+import { updateLesson } from '@/actions/lessons/updateLesson';
+import { Lessons } from '@/actions/lessons/types'; 
 
 interface DisplayLessonProps {
     
@@ -50,6 +53,8 @@ const DisplayLesson = () => {
     const [courses, setCourses] = useAtom(CoursesAtom);
     const [activities, setActivities] = useAtom(ActivitiesAtom);
 
+    const [stateLessons, updateLessonToDB, isLoading] = useActionState(updateLesson, {data:null, error: null});
+        
     useEffect (()=>{
       setLesson(currentDetailsObject as Lesson);
     }, [currentDetailsObject]);
@@ -70,6 +75,44 @@ const DisplayLesson = () => {
     const handleUnitClick = () => {
       setCurrentDetailsObject(parentUnit)
     }
+
+    const handleLabelChange = (newTitle: string) => {
+
+      // Optimistic Update UI
+        const updatedLesson = { ...lesson, title: newTitle } as Lesson;
+        
+        // Update the course title in the UI
+        setLessons(prev =>
+            prev.map(l => l?.lesson_id === lesson?.lesson_id ? updatedLesson : l)
+        );
+
+        // update the server
+        startTransition(()=>{
+            updateLessonToDB(updatedLesson!);
+        });
+
+    }
+
+    useEffect(()=>{
+        
+        // ignore the forst load.
+        if ((stateLessons.data === null && stateLessons.error === null))
+          return;
+    
+        if (stateLessons.error){
+    
+          // return correct state in 
+          setLessons(stateLessons.data as Lessons);
+    
+          toast.error(`Error!: ${stateLessons.error}`, {
+          className: "bg-red-100 text-green-800 border border-green-300 font-semibold",
+        });
+          return;
+        } 
+    
+        toast.success("Update saved")
+      
+    },[stateLessons]);
     
     return (
         <>
@@ -81,7 +124,7 @@ const DisplayLesson = () => {
 
     <div className="text-3xl font-bold flex flex-row">
       <BookOpen className="w-6 h-6 text-blue-500 mr-2" />
-      {lesson?.title}
+      {lesson && <EditLabel initialTitle={lesson?.title} onLabelChange={handleLabelChange} onClick={()=>{}} allowEditOnClick={true}/>}
     </div>
 
     <div>

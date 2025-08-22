@@ -18,6 +18,9 @@ import DeleteCourseBtn from './course-btn-delete';
 import AddUnitBtn from "./unit-btn-add";
 import { updateUnit } from '@/actions/units/updateUnit';
 import DeleteUnitButton from './unit-btn-delete';
+import UnitList from "./unit-list";
+import { mergeByKey } from '@/lib/merge-by-key';
+import { updateUnits } from '@/actions/units/updateUnits';
 
 interface DisplayCourseProps {
     course: Course
@@ -33,9 +36,21 @@ const DisplayCourse = () => {
     const [lessons, setLessons] = useAtom(LessonsAtom);
     const [units, setUnits] = useAtom(UnitsAtom);
     const [stateCourses, updateCourseToDB, isLoading] = useActionState(updateCourse, {data:null, error: null});
-    
+    const [stateUnits, updateUnitsToDB, isUpdating] = useActionState(updateUnits, {data: null, error: null});
+
     const [currentDetailsObject, setCurrentDetailsObject] = useAtom(CurrentDetailsObjectAtom);
     const  [course, setCourse] = useState<null | Course>(null);
+    const [unitsForCourse, setUnitsForCourse] = useState<Units | null>(null);
+
+    useEffect(()=>{
+      const newUnitsForCourse = units.filter((u) => u.course_id === course?.course_id)
+          .sort((a, b) => a.order_by - b.order_by);
+
+      console.log("newUnitsForCourse::updating", newUnitsForCourse);
+
+      setUnitsForCourse(newUnitsForCourse);
+      
+    }, [course, units]);
     
     useEffect(()=>{
       //console.log("Display-Course - New Object Detected", currentDetailsObject)
@@ -74,25 +89,53 @@ const DisplayCourse = () => {
     });
       return;
     } 
-      
-      
-    // happy path. 
-    /*   
-    setCourses(prev => [
-      ...prev.filter(c => c.course_id != (stateCourses.data as Course).course_id), // remove the optimistic added 
-      (stateCourses.data as Course)].sort((a, b) => a.order_by! - b.order_by!)     // add the server returned
-    );
-    */
 
     toast.success("Update saved")
   
-      },[stateCourses]);
+    },[stateCourses]);
+
+
+    const handleUpdateUnits = (newUnits: Units) => {
+      // update UI
+
+      console.log("handleUpdateUnits::started", newUnits);
+
+      const updateUnits = mergeByKey(units, newUnits, u => u.unit_id);
+
+      setUnits(updateUnits);
+
+      startTransition(()=>{
+        updateUnitsToDB(updateUnits);
+      })
+    }
+
+    useEffect(()=>{
+    
+    // ignore the forst load.
+    if ((stateUnits.data === null && stateUnits.error === null))
+      return;
+
+    if (stateUnits.error){
+
+      // return correct state in 
+      setUnits(stateUnits.data as Units);
+
+      toast.error(`Error!: ${stateUnits.error}`, {
+      className: "bg-red-100 text-green-800 border border-green-300 font-semibold",
+    });
+      return;
+    } 
+
+    toast.success("Update saved")
+  
+    },[stateUnits]);
+
 
     return (
         <div className="h-full">
   <div className='flex flex-row items-center text-3xl font-bold mt-8 border-b-2 border-gray-200 pb-4 mb-4'>
     <Book className="w-6 h-6 text-blue-500 mr-2" />
-    {course && <EditLabel initialTitle={course?.title} onLabelChange={handleLabelChange} onClick={()=>{}} />}
+    {course && <EditLabel initialTitle={course?.title} onLabelChange={handleLabelChange} onClick={()=>{}} allowEditOnClick={true}/>}
   </div>
   <div>
     {course && <DeleteCourseBtn course={course} onDelete={()=>{}}/>}
@@ -106,20 +149,22 @@ const DisplayCourse = () => {
     </div> 
     
       <div>
-      {course && 
-        units.filter((u) => u.course_id === course.course_id).map((unit, index) => {
+      {course && unitsForCourse &&
+        <UnitList initial={unitsForCourse}
+          onReorder={handleUpdateUnits}/>
+        /*
+        .map((unit, index) => {
           return (
             <div key={index} className="m-2 flex flex-row items-center border-slate-300 group relative">
               <div>
-                
-                  <ShowUnit unit={unit}/>
-                
-                
+                <ShowUnit unit={unit}/>
               </div>
             </div>
           );
         }
-        )}    
+        )
+        */
+        }    
       
     </div>
   </div>
