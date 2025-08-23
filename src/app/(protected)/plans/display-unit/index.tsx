@@ -55,6 +55,8 @@ import MultiSelectCheckboxes from '@/components/multiselect';
 import { sync } from 'framer-motion';
 import { syncAssignments } from '@/actions/assignments/syncAssignments';
 
+import LOList, { DisplayLearningObjective } from './display-lo';
+import { DisplayLearningObjectives} from './display-lo';
 
 interface DisplayUnitProps {
     
@@ -226,13 +228,17 @@ const DisplayUnit = () => {
                     {unit && <AddLearningObjectiveBtn unit={unit}/>}
                   </div>
                 </div>
-                {
+                {unit && <LOList initial={unit} onReorder={()=>{}}/>}
+                {unit && <DisplayLearningObjectives unit_id={unit?.unit_id}/>}
+
+                {/*
                   unit && getLearningObjectivesForUnit(unit.unit_id)
-                    .map((lo, index) => {
+                      .sort((a, b) => a.order_by - b.order_by).map((lo, index) => {
                       return (
                         <DisplayLearningObjective key={lo.learning_objective_id || uuidv4()} index={lo.learning_objective_id} lo={lo}/>
                       );
                     })  
+                */
                 }
                 </div>
           </TabsContent>
@@ -275,76 +281,7 @@ export default DisplayUnit;
 
 
 
-const DisplayLearningObjective = ({lo, index}:{lo:LearningObjective, index:string}) => {
-  
-  const [criterias, setCriterias] = useAtom(CriteriasAtom);
-  const [loLesonsMaps, setLOLessonsMaps] = useAtom<LOLessonsMaps>(LOLessonsMapsAtom);
 
-  const [learningObjectives, setLearningObjectives] = useAtom<LearningObjectives>(LearningObjectivesAtom);
-  const [stateLO, updateLOToDB, isLoading] = useActionState(updateLearningObjective, {data:null, error: null});
-
-  const handleLabelChange = (newTitle: string) => {
-    // Optimistic Update UI
-    const updatedLO = { ...lo, title: newTitle } as LearningObjective;
-    // Update the learning objective title in the UI
-    setLearningObjectives(prev =>
-        prev.map(c => c?.learning_objective_id === lo?.learning_objective_id ? updatedLO : c)
-    );  
-
-    startTransition(()=>{
-      updateLOToDB(updatedLO!);
-    }
-    );  
-
-
-  }
-
-  useEffect(()=>{
-    // ignore the forst load.
-    if ((stateLO.data === null && stateLO.error === null))
-      return;
-
-    if (stateLO.error){
-
-      // return correct state in 
-      setLearningObjectives(stateLO.data as LearningObjectives);
-
-      toast.error(`Error!: ${stateLO.error}`, {
-        className: "bg-red-100 text-green-800 border border-green-300 font-semibold",
-      });
-      return;
-    } 
-
-    toast.success("Update saved");
-  }, [stateLO])
-
-  return (<div key={index} className="m-4 p-4 border-[0.5px] border-neutral-300 cursor-pointer rounded-lg relative hover:bg-neutral-50 transition-all duration-200 ease-in-out">
-              <div className="flex flex-row items-center justify-between mb-2">
-                <div className="font-bold flex flex-row items-center group">
-                  <EditLabel initialTitle={lo.title} 
-                    onLabelChange={handleLabelChange} 
-                    onClick={()=>{} }
-                    allowEditOnClick={true}/>
-                  <div className="group-hover:opacity-100 transition-opacity duration-200 ease-in-out"><DeleteLearningObjectiveButton lo={lo} /></div>
-                  <div className="group-hover:opacity-100 transition-opacity duration-200 ease-in-out"><AddCriteriaBtn lo={lo} /></div>
-                </div>
-                <div className="text-[8pt] border-[0.5] border-neutral-300 bg-neutral-100 px-2 rounded-full ">
-                  {loLesonsMaps.filter(lom => lom.learning_objective_id === lo.learning_objective_id).length} 
-                  &nbsp;Lessons</div>
-              </div>
-              
-              {
-                criterias
-                  .filter(c => c.learning_objective_id === lo.learning_objective_id)
-                  .sort((a, b) => a.order_by - b.order_by)
-                  .map((criteria, j) => (
-                    <div key={criteria.criteria_id} className="ml-4 text-sm text-gray-600 relative group">
-                      <DisplayCriteria criteria={criteria} />
-                    </div>
-                  ))
-              }
-            </div>)
-}
 
 
 const DisplayLesson = ({index, lesson}: {index: number,  lesson:Lesson}) => {
@@ -417,55 +354,7 @@ const DisplayLesson = ({index, lesson}: {index: number,  lesson:Lesson}) => {
 }
 
 
-const DisplayCriteria = ({criteria}:{criteria: any}) => {
-  
-  const [criterias, setCriterias] = useAtom(CriteriasAtom);
-  const [stateCriteria, updateCriteriaToDB, isLoading] = useActionState(updateCriteria, {data:null, error: null});
-  
-  const handleLabelChange = (newTitle: string) => {
-    // Optimistic Update UI
-    const updatedCriteria = { ...criteria, title: newTitle } as any;
-    // Update the criteria title in the UI
-    setCriterias(prev =>
-        prev.map(c => c?.criteria_id === criteria?.criteria_id ? updatedCriteria : c)
-    );
 
-    startTransition(()=>{
-      updateCriteriaToDB(updatedCriteria!);
-    });
-  } 
-
-  useEffect(()=>{
-    // ignore the forst load.
-    if ((stateCriteria.data === null && stateCriteria.error === null))
-      return;
-
-    if (stateCriteria.error){
-
-      // return correct state in 
-      setCriterias(stateCriteria.data as any);
-
-      toast.error(`Error!: ${stateCriteria.error}`, {
-        className: "bg-red-100 text-green-800 border border-green-300 font-semibold",
-      });
-      return;
-    } 
-
-    toast.success("Update saved");
-  }, [stateCriteria]);  
-  
-  return (
-    <div className="ml-4 text-sm text-gray-600 flex flex-row items-center gap-2 ">
-      <div><EditLabel 
-        initialTitle={criteria.title} 
-        onClick={()=>{}} 
-        onLabelChange={handleLabelChange} 
-        allowEditOnClick={true}
-        /></div>
-      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out"><DeleteCriteriaButton criteria={criteria} /></div>
-    </div>
-  );
-}
 
 
 const DisplayAssignments = ({unit}:{unit: Unit}) => {

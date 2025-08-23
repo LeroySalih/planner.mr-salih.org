@@ -209,9 +209,9 @@ const DisplayLesson = ({index, lesson, onDragStart}: {index: number,  lesson:Les
         </div>
         <div className="text-black text-sm font-normal flex flex-row group items-center">
             <EditLabel initialTitle={lesson.title} onClick={()=>handleLessonClick(lesson)} onLabelChange={handleLabelChange} />
-            <div className="opacity-0  group-hover:opacity-100 transition-opacity duration-200 ease-in-out
+            <div className=" group-hover:opacity-100 transition-opacity duration-200 ease-in-out
              rounded ml-2"><DeleteLessonButton lesson={lesson}/> </div>
-            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out rounded ml-2">
+            <div className=" group-hover:opacity-100 transition-opacity duration-200 ease-in-out rounded ml-2">
                 
                 <MultiSelectCheckboxes 
                     options={learningObjectives.filter(lo => lo.unit_id == parentUnit?.unit_id).map(lo => ({id: lo.learning_objective_id, value: lo.learning_objective_id,  label: lo.title}))    }
