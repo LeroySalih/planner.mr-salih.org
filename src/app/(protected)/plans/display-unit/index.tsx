@@ -57,6 +57,8 @@ import { syncAssignments } from '@/actions/assignments/syncAssignments';
 
 import LOList, { DisplayLearningObjective } from './display-lo';
 import { DisplayLearningObjectives} from './display-lo';
+import { mergeByKey } from '@/lib/merge-by-key';
+import { updateLearningObjectives } from '@/actions/learning_objectives/updateLearningObjectives';
 
 interface DisplayUnitProps {
     
@@ -66,7 +68,7 @@ interface DisplayUnitProps {
 const DisplayUnit = () => {
 
     const [loLesonsMaps, setLOLessonsMaps] = useAtom<LOLessonsMaps>(LOLessonsMapsAtom);
-    const [learningObjectives, setLearningObjectives] = useAtom<LearningObjectives | null>(LearningObjectivesAtom);
+    const [learningObjectives, setLearningObjectives] = useAtom<LearningObjectives>(LearningObjectivesAtom);
     const [criterias, setCriteria] = useAtom(CriteriasAtom);  
     const [lessons, setLessons] = useAtom(LessonsAtom);
     const [units, setUnits] = useAtom(UnitsAtom);
@@ -82,7 +84,8 @@ const DisplayUnit = () => {
 
     const [stateUnit, updateUnitToDB, isLoading] = useActionState(updateUnit, {data:null, error: null});
     const [stateLessonReorder, reorderLessonsToDB, isReordering] = useActionState(reorderLessons, {data:null, error: null});
-  
+    const [stateLOReorder, reorderLOsToDB, isReorderingLOs] = useActionState(updateLearningObjectives, {data: null, error: null});
+
     
     // convert teh currentDetailsObject to a Unit
     // this is done to ensure that the unit is always a Unit type.
@@ -156,7 +159,7 @@ const DisplayUnit = () => {
           return unitLessons;
     };
 
-    const handleOnReorder = (newOrder: Lesson[]) => {
+    const handleOnReorderLesson = (newOrder: Lesson[]) => {
         
         //console.log("Reordering Lessons", newOrder);
 
@@ -195,6 +198,39 @@ const DisplayUnit = () => {
         toast.success("Reorder saved")
 
     },[stateLessonReorder]);
+
+
+    const handleReorderLOs = (newLOs: LearningObjectives) => {
+      // update UI
+      const updateLOs = mergeByKey(learningObjectives || [], newLOs, lo => lo.learning_objective_id);
+    
+      setLearningObjectives(updateLOs);
+    
+      startTransition(()=>{
+        reorderLOsToDB(updateLOs);
+      })
+    }
+
+    useEffect(()=>{
+
+      // ignore the forst load.
+        if ((stateLOReorder.data === null && stateLOReorder.error === null))
+          return;
+    
+        if (stateLOReorder.error){
+    
+          // return correct state in 
+          setLearningObjectives(stateLOReorder.data as LearningObjectives);
+    
+          toast.error(`Error!: ${stateLOReorder.error}`, {
+          className: "bg-red-100 text-green-800 border border-green-300 font-semibold",
+        });
+          return;
+        } 
+
+        toast.success("Reorder saved")
+
+    },[stateLOReorder])
     
 
     return (
@@ -228,18 +264,9 @@ const DisplayUnit = () => {
                     {unit && <AddLearningObjectiveBtn unit={unit}/>}
                   </div>
                 </div>
-                {unit && <LOList initial={unit} onReorder={()=>{}}/>}
-                {unit && <DisplayLearningObjectives unit_id={unit?.unit_id}/>}
-
-                {/*
-                  unit && getLearningObjectivesForUnit(unit.unit_id)
-                      .sort((a, b) => a.order_by - b.order_by).map((lo, index) => {
-                      return (
-                        <DisplayLearningObjective key={lo.learning_objective_id || uuidv4()} index={lo.learning_objective_id} lo={lo}/>
-                      );
-                    })  
-                */
-                }
+                
+                {unit && <LOList initial={unit} onReorder={handleReorderLOs}/>}
+                
                 </div>
           </TabsContent>
 
@@ -249,7 +276,10 @@ const DisplayUnit = () => {
                 {unit && <AddLessonBtn unit={unit!} />}
             </div>
             <div>
-              {lessons && unit && <LessonList  initialLessons={lessons.filter(l => l.unit_id === unit?.unit_id).sort((a, b)=> a.order_by - b.order_by)} onReorderComplete={handleOnReorder} />}
+              {lessons && unit && <LessonList  
+                initialLessons={lessons.filter(l => l.unit_id === unit?.unit_id).sort((a, b)=> a.order_by - b.order_by)} 
+                onReorderComplete={handleOnReorderLesson} 
+                />}
             </div>
           </TabsContent>
 

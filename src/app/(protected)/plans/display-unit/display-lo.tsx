@@ -20,7 +20,6 @@ import { CurrentDetailsObjectAtom } from '@/atoms';
 
 
 export default function LOList(
-
   {initial, onReorder}: 
   {initial: Unit, 
    onReorder: (los: LearningObjectives)=> void}
@@ -168,12 +167,10 @@ export const DisplayLearningObjective = ({lo, index}:{lo:LearningObjective, inde
                   <div className="group-hover:opacity-100 transition-opacity duration-200 ease-in-out"><AddCriteriaBtn lo={lo} /></div>
                 </div>
                 <div className="text-[8pt] border-[0.5] border-neutral-300 bg-neutral-100 px-2 rounded-full ">
-                  {loLesonsMaps.filter(lom => lom.learning_objective_id === lo.learning_objective_id).length} 
+                  {loLesonsMaps.filter(lom => lom.learning_objective_id === lo.learning_objective_id && lo.active).length} 
                   &nbsp;Lessons</div>
 
-                <div className="text-[8pt] border-[0.5] border-neutral-300 bg-neutral-100 px-2 rounded-full ">
-                  {lo.order_by}
-                </div>
+                
               </div>
               
               {

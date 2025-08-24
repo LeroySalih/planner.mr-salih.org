@@ -17,9 +17,14 @@ export const getLOLessonsMaps = async (): Promise<ReturnVal> => {
     let data = null, error = null;
     
     try{
+        // only get lesson maps where the lesson is active.
         const query = `
-            select lesson_id, learning_objective_id 
-            from learning_objective_lesson_map;
+            select lom.lesson_id, lom.learning_objective_id 
+            from learning_objective_lesson_map lom
+            left join lessons l on lom.lesson_id = l.lesson_id
+            left join learning_objectives lo on lom.learning_objective_id = lo.learning_objective_id
+            where lo.active = true and l.active = true
+            ;
         `
         const result = await pool.query(query);
 
