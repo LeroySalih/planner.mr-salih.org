@@ -34,9 +34,10 @@ export const updateUnit = async (prev: {data: any, error: any}, unit: Unit) => {
             with updated as (
 
             update units 
-            set title='${unit.title}'
-            where unit_id='${unit.unit_id}'
-            returning unit_id, title, course_id, tags, created_by, created,  active, order_by
+            set title=$2,
+                description=$3
+            where unit_id=$1
+            returning unit_id, title, description, course_id, tags, created_by, created,  active, order_by
             )
             SELECT updated.*, c.title as course_title, COALESCE(
                 json_agg(
@@ -51,11 +52,11 @@ export const updateUnit = async (prev: {data: any, error: any}, unit: Unit) => {
             from updated
             left join courses c on updated.course_id = c.course_id
             left join learning_objectives lo on updated.unit_id = lo.unit_id
-            group by updated.unit_id, updated.title, updated.course_id, updated.tags, updated.created_by, updated.created, updated.active, updated.order_by, c.title;
+            group by updated.unit_id, updated.title, updated.description, updated.course_id, updated.tags, updated.created_by, updated.created, updated.active, updated.order_by, c.title;
         `
         //console.log("update unit query", query);
 
-        const result = await pool.query(query);
+        const result = await pool.query(query, [unit.unit_id, unit.title, unit.description]);
 
         //console.log("update unit result", result.rows)
 
@@ -67,6 +68,7 @@ export const updateUnit = async (prev: {data: any, error: any}, unit: Unit) => {
         data = UnitSchema.parse({
             unit_id: result.rows[0].course_id,
             title: result.rows[0].title, 
+            description: result.rows[0].description,
             course_id: result.rows[0].course_id,
             course_title: result.rows[0].course_title,
             learning_objectives: result.rows[0].learning_objectives,
@@ -79,7 +81,7 @@ export const updateUnit = async (prev: {data: any, error: any}, unit: Unit) => {
 
     } catch(err) {
         if (err instanceof Error) {
-            console.error("Error!", err.message);
+            console.error("Error! updateUnit", err.message);
             error = err.message;
 
             const {data:prevCourses, error: prevCoursesError} = await getUnits();

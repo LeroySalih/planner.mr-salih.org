@@ -26,6 +26,7 @@ export const getUnits = async (): Promise<ReturnVal> => {
             SELECT
   u.unit_id,
   u.title,
+  u.description,
   u.course_id,
   c.title AS course_title,
   u.tags,

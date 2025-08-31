@@ -36,7 +36,7 @@ export const deleteUnit = async (prev: {data: any, error: any}, unit: Unit) => {
             update units 
             set active = false
             where unit_id='${unit.unit_id}'
-            returning unit_id, title, course_id, tags, created_by, created,  active, order_by
+            returning unit_id, title, description, course_id, tags, created_by, created,  active, order_by
             )
             SELECT deleted.*, c.title as course_title, COALESCE(
                 json_agg(
@@ -51,7 +51,7 @@ export const deleteUnit = async (prev: {data: any, error: any}, unit: Unit) => {
             from deleted
             left join courses c on deleted.course_id = c.course_id
             left join learning_objectives lo on deleted.unit_id = lo.unit_id
-            group by deleted.unit_id, deleted.title, deleted.course_id, deleted.tags, deleted.created_by, deleted.created, deleted.active, deleted.order_by, c.title;
+            group by deleted.unit_id, deleted.title, deleted.description, deleted.course_id, deleted.tags, deleted.created_by, deleted.created, deleted.active, deleted.order_by, c.title;
         `
         //console.log("delete unit query", query);
 
@@ -67,6 +67,7 @@ export const deleteUnit = async (prev: {data: any, error: any}, unit: Unit) => {
         data = UnitSchema.parse({
             unit_id: result.rows[0].course_id,
             title: result.rows[0].title, 
+            description: result.rows[0].description,
             course_id: result.rows[0].course_id,
             course_title: result.rows[0].course_title,
             learning_objectives: result.rows[0].learning_objectives,

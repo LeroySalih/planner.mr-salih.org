@@ -28,11 +28,13 @@ const UnitBtnAdd = ({course}:{course:Course}) => {
 
     
     const createNewUnit = (course: Course) => {
+        
         const newUnit = UnitSchema.parse({
             type: "unit",
             unit_id: uuidv4(),
             course_id: course.course_id,
             title: "New Unit",
+            description: "", 
             tags: [],
             active: true,
             created: new Date(),
@@ -48,6 +50,8 @@ const UnitBtnAdd = ({course}:{course:Course}) => {
     const [open, setOpen]= useState<boolean>(false);
     
     const [units, setUnits] = useAtom(UnitsAtom);
+
+    // TODO; Change this useState to allow null.
     const [unit, setUnit] = useState<Unit>(createNewUnit(course));
 
     const [state, addUnitToDB, isPending] = useActionState(addUnit, {data: null, error: null})

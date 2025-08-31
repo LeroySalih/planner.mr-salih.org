@@ -47,15 +47,16 @@ export const updateUnits = async (
       updated AS (
         UPDATE units u
         SET
-          title    = p.title,
+          title    = p.title, 
           order_by = p.order_by
         FROM payload p
         WHERE u.unit_id = p.unit_id
-        RETURNING u.unit_id, u.title, u.course_id, u.tags, u.created_by, u.created, u.active, u.order_by
+        RETURNING u.unit_id, u.title,u.description,  u.course_id, u.tags, u.created_by, u.created, u.active, u.order_by
       )
       SELECT
         u.unit_id,
         u.title,
+        u.description, 
         u.course_id,
         c.title AS course_title,
         u.tags,
@@ -77,7 +78,7 @@ export const updateUnits = async (
       LEFT JOIN courses c ON u.course_id = c.course_id
       LEFT JOIN learning_objectives lo ON u.unit_id = lo.unit_id
       GROUP BY
-        u.unit_id, u.title, u.course_id, u.tags, u.created_by, u.created, u.active, u.order_by, c.title;
+        u.unit_id, u.title, u.description, u.course_id, u.tags, u.created_by, u.created, u.active, u.order_by, c.title;
     `;
 
     const result = await pool.query(query, [unitIds, titles, orders]);
@@ -91,6 +92,7 @@ export const updateUnits = async (
     const rows = result.rows.map((r) => ({
       unit_id: r.unit_id,
       title: r.title,
+      description: r.description,
       course_id: r.course_id,
       course_title: r.course_title,
       learning_objectives: r.learning_objectives,

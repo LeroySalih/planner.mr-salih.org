@@ -18,9 +18,7 @@ const DeleteCourseBtn = ({course}:{course: Course, onDelete: ()=> void}) => {
   
 
   const handleDeleteCourse = () => {
-    
-    
-    
+     
     /* Add a New Course to start of courses*/
     setCourses(prev => prev.filter((c:Course) => c.course_id !== course.course_id));
     
@@ -29,7 +27,6 @@ const DeleteCourseBtn = ({course}:{course: Course, onDelete: ()=> void}) => {
       deleteCourseFromDB(course!);
     })
      
-    
   };
 
   useEffect(()=>{

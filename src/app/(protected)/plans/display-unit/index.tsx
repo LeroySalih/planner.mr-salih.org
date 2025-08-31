@@ -59,6 +59,8 @@ import LOList, { DisplayLearningObjective } from './display-lo';
 import { DisplayLearningObjectives} from './display-lo';
 import { mergeByKey } from '@/lib/merge-by-key';
 import { updateLearningObjectives } from '@/actions/learning_objectives/updateLearningObjectives';
+import TipTap from "@/components/tip-tap";
+import DeleteAssignmentButton from './assignment-btn-delete';
 
 interface DisplayUnitProps {
     
@@ -123,6 +125,23 @@ const DisplayUnit = () => {
         startTransition(()=>{
             updateUnitToDB(updatedUnit!);
         });
+
+    }
+
+    const handleDescriptionChange = (newDescription: string) => {
+
+      // Optimistic Update UI
+        const updatedUnit = { ...unit, description: newDescription } as Unit;
+        
+      // Update the course title in the UI
+      setUnits(prev =>
+          prev.map(c => c?.unit_id === unit?.unit_id ? updatedUnit : c)
+      );
+
+      // update the server
+      startTransition(()=>{
+          updateUnitToDB(updatedUnit!);
+      });
 
     }
 
@@ -231,6 +250,10 @@ const DisplayUnit = () => {
         toast.success("Reorder saved")
 
     },[stateLOReorder])
+
+    const handleDescriptionOnEditingEnd = (newDescription: string) => {
+      console.log(newDescription);
+    }
     
 
     return (
@@ -251,11 +274,18 @@ const DisplayUnit = () => {
         <Tabs defaultValue="rubric">
 
           <TabsList>
+            <TabsTrigger value="description">Description</TabsTrigger>
             <TabsTrigger value="rubric">Rubric</TabsTrigger>
             <TabsTrigger value="lessons">Lessons</TabsTrigger>
             <TabsTrigger value="assignments">Assignments</TabsTrigger>
           </TabsList>
 
+          <TabsContent value="description">
+            <div>Add a module description</div>
+            <div>
+              <TipTap key={unit?.unit_id} initialContent={unit?.description || ""} onEditingEnd={handleDescriptionChange}/>
+            </div>
+          </TabsContent>
           <TabsContent value="rubric">
             <div className="h-full overflow-y-auto">
                 <div>
@@ -461,7 +491,10 @@ const DisplayAssignments = ({unit}:{unit: Unit}) => {
             {
               // all groups assigned to this unit
               assignments?.filter((a) => a.unit_id == unit.unit_id).map((a,i) => <div key={Math.random()} className="m-2 flex flex-col border-[0.5px] border-neutral-300 p-2 rounded-xl">
-                <div className="text-md ">{a.group_title}</div>
+                <div className="text-md ">
+                  {a.group_title}
+                  
+                </div>
                 
               </div>) 
             }

@@ -26,8 +26,8 @@ export const ActivitiesAtom = atom <Activities>([]);
 export const CriteriasAtom = atom<Criterias>([]);
 
 export const LOLessonsMapsAtom = atom<LOLessonsMaps>([]);
-export const AssignmentsAtom = atom<Assignments | null>(null);
-export const GroupsAtom = atom<Groups | null>(null);
+export const AssignmentsAtom = atom<Assignments>([]);
+export const GroupsAtom = atom<Groups>([]);
 
 export const CurrentCourseAtom = atom<Course | null>(null);
 export const CurrentUnitAtom = atom<Unit | null>(null);

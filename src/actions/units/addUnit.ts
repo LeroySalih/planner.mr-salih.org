@@ -53,10 +53,11 @@ export const addUnit = async (prev: {data: any, error: any}, unit: Unit) => {
         `*/
 
         const query = `WITH inserted AS (
-    INSERT INTO units (unit_id, title, course_id, tags, created_by)
+    INSERT INTO units (unit_id, title, description, course_id, tags, created_by)
     VALUES (
         '${unit.unit_id}',
         '${unit.title}',
+        '${unit.description}',
         '${unit.course_id}',
         '{}',
         'system'
@@ -64,6 +65,7 @@ export const addUnit = async (prev: {data: any, error: any}, unit: Unit) => {
     RETURNING 
         unit_id,
         title,
+        description, 
         course_id,
         tags,
         created_by,
@@ -111,6 +113,7 @@ LEFT JOIN courses AS c
         data = UnitSchema.parse({
             unit_id: result.rows[0].course_id,
             title: result.rows[0].title, 
+            description: result.rows[0].description,
             course_id: result.rows[0].course_id,
             course_title: result.rows[0].course_title,
             learning_objectives: result.rows[0].learning_objectives,

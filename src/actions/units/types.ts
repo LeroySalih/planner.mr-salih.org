@@ -4,6 +4,7 @@ export const UnitSchema = z.object({
     type: z.string().default("unit"),
     unit_id: z.string(),
     title: z.string(),
+    description: z.string().nullable(),
     course_id: z.string(),
     course_title: z.string().optional(),
     tags: z.array(z.string()),
