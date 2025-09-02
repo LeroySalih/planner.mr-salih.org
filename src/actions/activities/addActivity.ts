@@ -16,8 +16,6 @@ const ReturnValSchema = z.object({
 });
 
 
-
-
 export const addActivity = async (prev: {data: any, error: any}, activity: Activity) => {
     
     ////console.log("addActivity", prev, activity);
