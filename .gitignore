@@ -12,6 +12,8 @@
 !.yarn/versions
 /src/app/content/
 
+./bump.sh
+
 # testing
 /coverage
 

@@ -17,7 +17,7 @@ export default clerkMiddleware(async (auth, req) => {
 });
 
 export const config = {
-  matcher: [
+  matcher: [ 
     // Skip _next and static assets
     "/((?!_next|.*\\..*).*)",
     "/",
