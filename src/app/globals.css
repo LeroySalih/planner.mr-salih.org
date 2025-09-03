@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "../app/\(protected\)/assignment-tracker/assignment-tracker-variables.css";
+@import "./styles/assignment-tracker-variables.css";
 
 @plugin "daisyui";
 
