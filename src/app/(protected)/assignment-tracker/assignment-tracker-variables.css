@@ -1,0 +1,62 @@
+/* Assignment Tracker Component Variables */
+:root {
+  /* Time-based assignment colors */
+  --assignment-tracker-past: oklch(0.5 0.02 240); /* #64748b - Slate for past assignments */
+  --assignment-tracker-current: oklch(0.35 0.15 160); /* #047857 - Dark green for current week */
+  --assignment-tracker-future: oklch(0.65 0.12 160); /* #34d399 - Light green for future assignments */
+
+  /* Grid styling */
+  --assignment-tracker-header-bg: oklch(0.97 0 0); /* #f1f5f9 - Header background */
+  --assignment-tracker-cell-border: oklch(0.85 0 0); /* #d1d5db - Cell borders */
+  --assignment-tracker-hover-bg: oklch(0.95 0 0); /* #f8fafc - Hover background */
+
+  /* Assignment block styling */
+  --assignment-tracker-assignment-text: oklch(1 0 0); /* #ffffff - White text on assignments */
+  --assignment-tracker-assignment-radius: 0.25rem; /* 4px - Assignment block border radius */
+
+  /* Popup styling */
+  --assignment-tracker-popup-bg: oklch(0.2 0 0); /* #1e293b - Dark popup background */
+  --assignment-tracker-popup-text: oklch(1 0 0); /* #ffffff - White popup text */
+  --assignment-tracker-popup-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+
+  /* Filter and form styling */
+  --assignment-tracker-filter-bg: oklch(1 0 0); /* #ffffff - Filter input background */
+  --assignment-tracker-badge-bg: oklch(0.45 0.15 160); /* #059669 - Selected class badge background */
+  --assignment-tracker-badge-text: oklch(1 0 0); /* #ffffff - Badge text color */
+
+  /* Added custom Tailwind variables with assignment-grid prefix */
+  --assignment-grid-primary: oklch(0.45 0.15 160); /* #059669 - Primary emerald green */
+  --assignment-grid-primary-hover: oklch(0.35 0.15 160); /* #047857 - Darker emerald for hover */
+  --assignment-grid-primary-light: oklch(0.65 0.12 160); /* #34d399 - Light emerald */
+  --assignment-grid-secondary: oklch(0.5 0.02 240); /* #64748b - Slate secondary */
+  --assignment-grid-accent: oklch(0.97 0 0); /* #f1f5f9 - Light accent */
+  --assignment-grid-border: oklch(0.85 0 0); /* #d1d5db - Border color */
+  --assignment-grid-text: oklch(0.2 0 0); /* #1e293b - Dark text */
+  --assignment-grid-text-light: oklch(1 0 0); /* #ffffff - Light text */
+  --assignment-grid-background: oklch(1 0 0); /* #ffffff - Background */
+  --assignment-grid-surface: oklch(0.95 0 0); /* #f8fafc - Surface color */
+}
+
+.dark {
+  /* Dark mode overrides for assignment tracker */
+  --assignment-tracker-past: oklch(0.4 0.02 240); /* Darker slate for past assignments */
+  --assignment-tracker-current: oklch(0.25 0.15 160); /* Darker green for current week */
+  --assignment-tracker-future: oklch(0.55 0.12 160); /* Darker light green for future */
+  --assignment-tracker-header-bg: oklch(0.205 0 0); /* Dark header background */
+  --assignment-tracker-cell-border: oklch(0.269 0 0); /* Dark cell borders */
+  --assignment-tracker-hover-bg: oklch(0.25 0 0); /* Dark hover background */
+  --assignment-tracker-popup-bg: oklch(0.145 0 0); /* Dark popup background */
+  --assignment-tracker-filter-bg: oklch(0.269 0 0); /* Dark filter input background */
+
+  /* Added dark mode overrides for assignment-grid variables */
+  --assignment-grid-primary: oklch(0.35 0.15 160); /* Darker emerald for dark mode */
+  --assignment-grid-primary-hover: oklch(0.25 0.15 160); /* Even darker emerald for hover */
+  --assignment-grid-primary-light: oklch(0.55 0.12 160); /* Darker light emerald */
+  --assignment-grid-secondary: oklch(0.4 0.02 240); /* Darker slate */
+  --assignment-grid-accent: oklch(0.205 0 0); /* Dark accent */
+  --assignment-grid-border: oklch(0.269 0 0); /* Dark border */
+  --assignment-grid-text: oklch(0.9 0 0); /* Light text for dark mode */
+  --assignment-grid-text-light: oklch(1 0 0); /* White text */
+  --assignment-grid-background: oklch(0.145 0 0); /* Dark background */
+  --assignment-grid-surface: oklch(0.25 0 0); /* Dark surface */
+}

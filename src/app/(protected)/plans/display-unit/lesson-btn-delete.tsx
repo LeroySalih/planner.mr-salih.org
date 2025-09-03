@@ -10,7 +10,7 @@ import { Lesson, Lessons } from "@/actions/lessons/types";
 const DeleteLessonButton = ({lesson}: {lesson: Lesson}) => {
 
     const [lessons, setLessons] = useAtom(LessonsAtom);
-    const [state, deleteFromServer, isPending] = useActionState(deleteLesson, {data: null, error: null, timestamp: Date.now()});
+    const [state, deleteFromServer, isPending] = useActionState(deleteLesson, {data: null, error: null});
     
     const handleClick = () => {
 

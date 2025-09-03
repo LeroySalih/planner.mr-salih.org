@@ -111,6 +111,12 @@ const RootLayout = async ({
                   <Link href="/plans">Course Plans</Link>
                   </div>)}
 
+                
+
+                {profile && (<div className="ml-4 text-sm hover:underline hover:text-blue-400">
+                  <Link href="/assignment-tracker">Assignments</Link>
+                </div>)}
+
                 {profile && (<div className="ml-4 text-sm hover:underline hover:text-blue-400">
                   <Link href="/profile">Profile</Link>
                 </div>)}
