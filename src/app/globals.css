@@ -4,7 +4,7 @@
 
 @plugin "daisyui";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is(.dark *)); 
 
 :root {
   /* Updated color tokens to match educational design brief */
