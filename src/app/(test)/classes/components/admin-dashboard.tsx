@@ -3,6 +3,7 @@
 import { DialogFooter } from "@/components/ui/dialog"
 
 import type React from "react"
+import { DateTime } from "luxon"
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
@@ -24,14 +25,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Trash2, Search, X } from "lucide-react"
 import { toast} from "sonner";
 
-
-interface Group {
-  id: string
-  title: string
-  joinCode: string
-  memberCount: number
-  createdAt: string
-}
+import {z} from "zod";
+import { Groups, Group, GroupSchema } from "@/actions/groups/types"
 
 interface Profile {
   id: string
@@ -47,19 +42,26 @@ interface Profile {
 type DataChangeType = "create" | "edit" | "delete"
 
 interface AdminDashboardProps {
-  groups: Group[]
+  initialGroups: Groups
   profiles: Profile[]
   onGroupChange: (group: Group, changeType: DataChangeType) => void
   onProfileChange: (profile: Profile, changeType: DataChangeType) => void
 }
 
-export default function AdminDashboard({ groups, profiles, onGroupChange, onProfileChange }: AdminDashboardProps) {
+export default function AdminDashboard({ initialGroups, profiles, onGroupChange, onProfileChange }: AdminDashboardProps) {
   //const { toast } = useToast()
+
+  const [groups, setGroups] = useState(initialGroups);
+
+  useEffect(()=>{
+    console.log("AdminDashboard", initialGroups)
+    setGroups(initialGroups);
+  },[initialGroups])
 
   const [editingGroupTitle, setEditingGroupTitle] = useState<string | null>(null)
   const [editingGroupTitleValue, setEditingGroupTitleValue] = useState("")
 
-  const [newGroup, setNewGroup] = useState({ title: "", joinCode: "" })
+  const [newGroup, setNewGroup] = useState<Group>(GroupSchema.parse({}));
   const [newProfile, setNewProfile] = useState({
     name: "",
     email: "",
@@ -93,7 +95,7 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
 
   const saveGroupTitle = (groupId: string) => {
     if (editingGroupTitleValue.trim()) {
-      const groupToUpdate = groups.find((g) => g.id === groupId)
+      const groupToUpdate = groups.find((g) => g.group_id === groupId)
       if (groupToUpdate) {
         onGroupChange({ ...groupToUpdate, title: editingGroupTitleValue.trim() }, "edit")
       }
@@ -121,8 +123,8 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
     }
 
     const selectedGroups = groups
-      .filter((group) => newProfile.selectedGroups.includes(group.id))
-      .map((group) => ({ id: group.id, title: group.title }))
+      .filter((group) => newProfile.selectedGroups.includes(group.group_id))
+      .map((group) => ({ id: group.group_id, title: group.title! }))
 
     const profile: Profile = {
       id: Date.now().toString(),
@@ -141,23 +143,17 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
   }
 
   const createGroup = () => {
-    if (!newGroup.title || !newGroup.joinCode) {
+    if (!newGroup.title || !newGroup.join_code) {
       toast("Error",
         {description: "Please fill in all fields"})
       return
     }
 
-    const group: Group = {
-      id: Date.now().toString(),
-      title: newGroup.title,
-      joinCode: newGroup.joinCode,
-      memberCount: 0,
-      createdAt: new Date().toISOString().split("T")[0],
-    }
+    const group: Group = GroupSchema.parse({title: newGroup.title, join_code: newGroup.join_code});
 
     onGroupChange(group, "create")
-    setNewGroup({ title: "", joinCode: "" })
-    setIsGroupDialogOpen(false)
+    setNewGroup(group);
+    setIsGroupDialogOpen(false);
   }
 
   const copyJoinCode = (code: string) => {
@@ -176,7 +172,7 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
   }
 
   const deleteGroup = (id: string) => {
-    const groupToDelete = groups.find((g) => g.id === id)
+    const groupToDelete = groups.find((g) => g.group_id === id)
     if (groupToDelete) {
       onGroupChange(groupToDelete, "delete")
     }
@@ -201,15 +197,16 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
     if (!editProfile) return
 
     const selectedGroups = groups
-      .filter((group) => editProfile.groups.some((g) => g.id === group.id))
-      .map((group) => ({ id: group.id, title: group.title }))
+      .filter((group) => editProfile.groups.some((g) => g.id === group.group_id))
+      .map((group) => ({ id: group.group_id, title: group.title }))
 
     const updatedProfile = {
       ...editProfile,
       groups: selectedGroups,
     }
 
-    onProfileChange(updatedProfile, "edit")
+    // ToDo - update parent with new profile change 
+    //onProfileChange(updatedProfile, "edit")
     setIsEditProfileDialogOpen(false)
     setEditProfile(null)
   }
@@ -218,15 +215,16 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
     if (!editProfileGroups) return
 
     const selectedGroups = groups
-      .filter((group) => editProfileGroups.groups.some((g) => g.id === group.id))
-      .map((group) => ({ id: group.id, title: group.title }))
+      .filter((group) => editProfileGroups.groups.some((g) => g.id === group.group_id))
+      .map((group) => ({ id: group.group_id, title: group.title }))
 
     const updatedProfile = {
       ...editProfileGroups,
       groups: selectedGroups,
     }
 
-    onProfileChange(updatedProfile, "edit")
+    //Todo:
+    //onProfileChange(updatedProfile, "edit")
     setIsEditProfileGroupsDialogOpen(false)
     setEditProfileGroups(null)
   }
@@ -253,7 +251,7 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
               ...prev,
               groups: prev.groups.some((g) => g.id === groupId)
                 ? prev.groups.filter((g) => g.id !== groupId)
-                : [...prev.groups, { id: groupId, title: groups.find((g) => g.id === groupId)?.title || "" }],
+                : [...prev.groups, { id: groupId, title: groups.find((g) => g.group_id === groupId)?.title || "" }],
             }
           : null,
       )
@@ -284,18 +282,18 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
               ...prev,
               groups: prev.groups.some((g) => g.id === groupId)
                 ? prev.groups.filter((g) => g.id !== groupId)
-                : [...prev.groups, { id: groupId, title: groups.find((g) => g.id === groupId)?.title || "" }],
+                : [...prev.groups, { id: groupId, title: groups.find((g) => g.group_id === groupId)?.title || "" }],
             }
           : null,
       )
     }
   }
 
-  const filteredGroups = groups.filter(
+  const filteredGroups = groups?.filter(
     (group) =>
-      group.title.toLowerCase().includes(groupFilter.toLowerCase()) ||
-      group.joinCode.toLowerCase().includes(groupFilter.toLowerCase()),
-  )
+      group.title?.toLowerCase().includes(groupFilter.toLowerCase()) ||
+      group.join_code?.toLowerCase().includes(groupFilter.toLowerCase()),
+  ) || [];
 
   const filteredProfiles = profiles.filter(
     (profile) =>
@@ -323,9 +321,9 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
     setProfilesCurrentPage(1)
   }, [profileFilter])
 
-  const filteredGroupsForDialog = groups.filter((group) =>
-    group.title.toLowerCase().includes(groupsDialogFilter.toLowerCase()),
-  )
+  const filteredGroupsForDialog = groups?.filter((group) =>
+    group.title?.toLowerCase().includes(groupsDialogFilter.toLowerCase()),
+  ) || [];
 
   const startEditing = (profileId: string, field: string, currentValue: string) => {
     setEditingCell({ profileId, field })
@@ -357,6 +355,15 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
     }
   }
 
+  const handleCreateNewGroup = (open: boolean) => {
+    console.log("Dlg is ", open);
+    if (open){
+      // reset the new object
+      setNewGroup(GroupSchema.parse({}));
+    }
+    setIsGroupDialogOpen(open);
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -386,7 +393,7 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
                       <CardTitle>Groups</CardTitle>
                       <CardDescription>Manage student groups and join codes</CardDescription>
                     </div>
-                    <Dialog open={isGroupDialogOpen} onOpenChange={setIsGroupDialogOpen}>
+                    <Dialog open={isGroupDialogOpen} onOpenChange={handleCreateNewGroup}>
                       <DialogTrigger asChild>
                         <Button className="bg-primary text-primary-foreground hover:bg-primary/90">Create Group</Button>
                       </DialogTrigger>
@@ -400,7 +407,7 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
                             <Label htmlFor="title">Group Title</Label>
                             <Input
                               id="title"
-                              value={newGroup.title}
+                              value={newGroup?.title || ""}
                               onChange={(e) => setNewGroup((prev) => ({ ...prev, title: e.target.value }))}
                               placeholder="e.g., Mathematics Year 10"
                             />
@@ -408,17 +415,10 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
                           <div className="grid gap-2">
                             <Label htmlFor="joinCode">Join Code</Label>
                             <div className="flex gap-2">
-                              <Input
+                              <Label
                                 id="joinCode"
-                                value={newGroup.joinCode}
-                                onChange={(e) =>
-                                  setNewGroup((prev) => ({ ...prev, joinCode: e.target.value.toUpperCase() }))
-                                }
-                                placeholder="Enter or generate code"
-                              />
-                              <Button type="button" variant="outline" onClick={generateJoinCode}>
-                                Generate
-                              </Button>
+                              >{newGroup.join_code}
+                              </Label>
                             </div>
                           </div>
                         </div>
@@ -458,27 +458,27 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
                     </TableHeader>
                     <TableBody>
                       {paginatedGroups.map((group) => (
-                        <TableRow key={group.id}>
+                        <TableRow key={group.group_id}>
                           <TableCell className="font-medium">
-                            {editingGroupTitle === group.id ? (
+                            {editingGroupTitle === group.group_id ? (
                               <Input
                                 value={editingGroupTitleValue}
                                 onChange={(e) => setEditingGroupTitleValue(e.target.value)}
                                 onKeyDown={(e) => {
                                   if (e.key === "Enter") {
-                                    saveGroupTitle(group.id)
+                                    saveGroupTitle(group.group_id)
                                   } else if (e.key === "Escape") {
                                     cancelEditingGroupTitle()
                                   }
                                 }}
-                                onBlur={() => saveGroupTitle(group.id)}
+                                onBlur={() => saveGroupTitle(group.group_id)}
                                 className="h-8"
                                 autoFocus
                               />
                             ) : (
                               <span
                                 className="cursor-pointer hover:bg-muted/50 px-2 py-1 rounded transition-colors"
-                                onClick={() => startEditingGroupTitle(group.id, group.title)}
+                                onClick={() => startEditingGroupTitle(group.group_id, group.title!)}
                               >
                                 {group.title}
                               </span>
@@ -488,18 +488,18 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
                             <Badge
                               variant="secondary"
                               className="font-mono cursor-pointer hover:bg-primary/10 transition-colors"
-                              onClick={() => showFullscreenJoinCode(group.joinCode, group.title)}
+                              onClick={() => showFullscreenJoinCode(group.join_code!, group.title!)}
                             >
-                              {group.joinCode}
+                              {group.join_code}
                             </Badge>
                           </TableCell>
-                          <TableCell>{group.memberCount}</TableCell>
-                          <TableCell>{group.createdAt}</TableCell>
+                          <TableCell>{group.member_count}</TableCell>
+                          <TableCell>{DateTime.fromJSDate(group.created).toFormat("yyyy-MM-dd")}</TableCell>
                           <TableCell>
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => deleteGroup(group.id)}
+                              onClick={() => deleteGroup(group.group_id)}
                               className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
                             >
                               <Trash2 className="h-4 w-4" />
@@ -627,14 +627,14 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
                           <div className="grid gap-2">
                             <Label>Select Groups (Optional)</Label>
                             <div className="space-y-2 max-h-32 overflow-y-auto">
-                              {groups.map((group) => (
-                                <div key={group.id} className="flex items-center space-x-2">
+                              {groups?.map((group) => (
+                                <div key={group.group_id} className="flex items-center space-x-2">
                                   <Checkbox
-                                    id={`group-${group.id}`}
-                                    checked={newProfile.selectedGroups.includes(group.id)}
-                                    onCheckedChange={() => toggleGroupSelection(group.id, true)}
+                                    id={`group-${group.group_id}`}
+                                    checked={newProfile.selectedGroups.includes(group.group_id)}
+                                    onCheckedChange={() => toggleGroupSelection(group.group_id, true)}
                                   />
-                                  <Label htmlFor={`group-${group.id}`} className="text-sm">
+                                  <Label htmlFor={`group-${group.group_id}`} className="text-sm">
                                     {group.title}
                                   </Label>
                                 </div>
@@ -907,7 +907,7 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
               <div className="flex gap-2">
                 <Input
                   id="edit-joinCode"
-                  value={editGroup?.joinCode || ""}
+                  value={editGroup?.join_code || ""}
                   onChange={(e) =>
                     setEditGroup((prev) => (prev ? { ...prev, joinCode: e.target.value.toUpperCase() } : null))
                   }
@@ -992,14 +992,14 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
             <div className="grid gap-2">
               <Label>Select Groups</Label>
               <div className="space-y-2 max-h-32 overflow-y-auto">
-                {groups.map((group) => (
-                  <div key={group.id} className="flex items-center space-x-2">
+                {groups?.map((group) => (
+                  <div key={group.group_id} className="flex items-center space-x-2">
                     <Checkbox
-                      id={`edit-group-${group.id}`}
-                      checked={editProfile?.groups.some((g) => g.id === group.id) || false}
-                      onCheckedChange={() => toggleGroupSelection(group.id, false)}
+                      id={`edit-group-${group.group_id}`}
+                      checked={editProfile?.groups.some((g) => g.id === group.group_id) || false}
+                      onCheckedChange={() => toggleGroupSelection(group.group_id, false)}
                     />
-                    <Label htmlFor={`edit-group-${group.id}`} className="text-sm">
+                    <Label htmlFor={`edit-group-${group.group_id}`} className="text-sm">
                       {group.title}
                     </Label>
                   </div>
@@ -1039,13 +1039,13 @@ export default function AdminDashboard({ groups, profiles, onGroupChange, onProf
               <Label>Select Groups</Label>
               <div className="space-y-2 max-h-64 overflow-y-auto">
                 {filteredGroupsForDialog.map((group) => (
-                  <div key={group.id} className="flex items-center space-x-2">
+                  <div key={group.group_id} className="flex items-center space-x-2">
                     <Checkbox
-                      id={`groups-edit-${group.id}`}
-                      checked={editProfileGroups?.groups.some((g) => g.id === group.id) || false}
-                      onCheckedChange={() => toggleGroupSelectionForGroupsEdit(group.id)}
+                      id={`groups-edit-${group.group_id}`}
+                      checked={editProfileGroups?.groups.some((g) => g.id === group.group_id) || false}
+                      onCheckedChange={() => toggleGroupSelectionForGroupsEdit(group.group_id)}
                     />
-                    <Label htmlFor={`groups-edit-${group.id}`} className="text-sm">
+                    <Label htmlFor={`groups-edit-${group.group_id}`} className="text-sm">
                       {group.title}
                     </Label>
                   </div>

@@ -1,22 +1,9 @@
-export interface Group {
-  id: string
-  title: string
-  joinCode: string
-  memberCount: number
-  createdAt: string
-}
 
-export interface Profile {
-  id: string
-  name: string
-  email: string
-  motherEmail: string
-  fatherEmail: string
-  groups: { id: string; title: string }[]
-  joinedAt: string
-  is_teacher: boolean
-}
 
+
+
+
+/*
 export const initialGroups: Group[] = [
   {
     id: "1",
@@ -173,6 +160,21 @@ export const initialGroups: Group[] = [
     createdAt: "2024-03-10",
   },
 ]
+
+*/
+
+
+
+export interface Profile {
+  id: string
+  name: string
+  email: string
+  motherEmail: string
+  fatherEmail: string
+  groups: { id: string; title: string }[]
+  joinedAt: string
+  is_teacher: boolean
+}
 
 export const initialProfiles: Profile[] = [
   {
