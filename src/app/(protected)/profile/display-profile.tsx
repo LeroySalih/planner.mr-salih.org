@@ -58,6 +58,8 @@ const DisplayProfile = ({userId}: {userId: string | null}) => {
                     <p>No groups found.</p>
                 )}
             </div>
+
+            <pre>{JSON.stringify(profile, null, 2)}</pre>
             
            
         </div>
