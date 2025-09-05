@@ -28,8 +28,8 @@ export const addGroup = async (prev: {data: any, error: any}, group: Group) => {
      const query = `
             with inserted as (
             
-            insert into groups (title, join_code, active, created, created_by)
-            values ($1, $2, $3, $4, $5)
+            insert into groups (group_id, title, join_code, active, created, created_by)
+            values ($1, $2, $3, $4, $5, $6)
             returning group_id, title, join_code, active, created_by, created, order_by
             
             )
@@ -39,7 +39,7 @@ export const addGroup = async (prev: {data: any, error: any}, group: Group) => {
             `
     try{
         
-        const result = await pool.query(query, [group.title, group.join_code, group.active, group.created, group.created_by]);
+        const result = await pool.query(query, [group.group_id, group.title, group.join_code, group.active, group.created, group.created_by]);
 
         if (result.rowCount != 1){
             throw new Error(`Incorrect number of rows updated ${result.rowCount}`);

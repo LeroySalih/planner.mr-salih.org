@@ -27,6 +27,9 @@ import { toast} from "sonner";
 
 import {z} from "zod";
 import { Groups, Group, GroupSchema } from "@/actions/groups/types"
+import { v4 as uuidv4 } from "uuid";
+import { cornersOfRectangle } from "@dnd-kit/core/dist/utilities/algorithms/helpers"
+
 
 interface Profile {
   id: string
@@ -149,7 +152,7 @@ export default function AdminDashboard({ initialGroups, profiles, onGroupChange,
       return
     }
 
-    const group: Group = GroupSchema.parse({title: newGroup.title, join_code: newGroup.join_code});
+    const group: Group = GroupSchema.parse({group_id: uuidv4(), title: newGroup.title, join_code: newGroup.join_code});
 
     onGroupChange(group, "create")
     setNewGroup(group);
@@ -295,6 +298,8 @@ export default function AdminDashboard({ initialGroups, profiles, onGroupChange,
       group.join_code?.toLowerCase().includes(groupFilter.toLowerCase()),
   ) || [];
 
+  console.log("filteredGroups", filteredGroups);
+
   const filteredProfiles = profiles.filter(
     (profile) =>
       profile.name.toLowerCase().includes(profileFilter.toLowerCase()) ||
@@ -356,10 +361,12 @@ export default function AdminDashboard({ initialGroups, profiles, onGroupChange,
   }
 
   const handleCreateNewGroup = (open: boolean) => {
-    console.log("Dlg is ", open);
     if (open){
+      
+      const newGroup = GroupSchema.parse({group_id: uuidv4()});
+      
       // reset the new object
-      setNewGroup(GroupSchema.parse({}));
+      setNewGroup(newGroup);
     }
     setIsGroupDialogOpen(open);
   }
