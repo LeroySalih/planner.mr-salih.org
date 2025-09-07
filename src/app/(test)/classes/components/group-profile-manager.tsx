@@ -4,10 +4,10 @@ import { useState, useEffect, useActionState, startTransition } from "react";
 import { toast } from "sonner"
 import { AdminDashboard } from "./admin-dashboard"
 import {  type Profile,  initialProfiles } from "../data/test-data"
-import { type Groups, Group} from "@/actions/groups/types"
-import { addGroup } from "@/actions/groups/addGroup";
-import { deleteGroup } from "@/actions/groups/deleteGroup";
-import { updateGroup } from "@/actions/groups/updateGroup";
+import { type Groups, Group} from "@/actions/groups-memberships/types";
+import { addGroup } from "@/actions/groups-memberships/addGroup";
+import { deleteGroup } from "@/actions/groups-memberships/deleteGroup";
+import { updateGroup } from "@/actions/groups-memberships/updateGroup";
 
 import { error } from "console";
 
@@ -36,7 +36,7 @@ export default function GroupProfileManager({initialGroups} : {initialGroups: Gr
            addGroupToDB(group);
         });
         // update the UI
-        setGroups((prev) => {
+        setGroups((prev: Groups) => {
           const newGroups = [...prev, group]
           console.log(`[v0] Groups after create:`, newGroups.length)
           return newGroups
@@ -51,8 +51,8 @@ export default function GroupProfileManager({initialGroups} : {initialGroups: Gr
         });
         
         // update UI
-        setGroups((prev) => {
-          const updatedGroups = prev.map((g) => (g.group_id === group.group_id ? group : g))
+        setGroups((prev: Groups) => {
+          const updatedGroups = prev.map((g:Group) => (g.group_id === group.group_id ? group : g))
           console.log(`[v0] Group "${group.title}" updated`)
           return updatedGroups
         })
@@ -61,7 +61,7 @@ export default function GroupProfileManager({initialGroups} : {initialGroups: Gr
       case "delete":
 
         // remove from UI
-        setGroups((prev) => {
+        setGroups((prev: Groups) => {
           const filteredGroups = prev.filter((g) => g.group_id !== group.group_id)
           console.log(`[v0] Groups after delete:`, filteredGroups.length)
           return filteredGroups

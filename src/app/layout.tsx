@@ -29,7 +29,7 @@ import {getProfile} from "@/actions/profiles/getProfile";
 import Link from "next/link";
 import { createNewProfile } from "@/actions/profiles/createNewProfile";
 import { getAssignments } from "@/actions/assignments/getAssignments";
-import { getGroups } from "@/actions/groups/getGroups";
+import { getGroups } from "@/actions/groups-memberships/getGroups";
 import { getActivities } from "@/actions/activities/getActivities";
 import MobileConsole from "@/components/mobile-console";
 
@@ -63,13 +63,11 @@ const RootLayout = async ({
     let profile = userId ? await getProfile(userId) : null;
 
     
-    // first time user signs in
+    // user has logged in but has not joined a group, so redirect to profile page.
     if (userId !== null && profile?.data === null){
-      const cUser = await currentUser();
-      console.info("Profile not found for user ID: ", userId);
-      let profile = await createNewProfile(userId, cUser?.firstName || "Not Set", cUser?.lastName || "Not Set");
-
-
+    //  const cUser = await currentUser();
+    //  console.info("Profile not found for user ID: ", userId);
+    //  let profile = await createNewProfile(userId, cUser?.firstName || "Not Set", cUser?.lastName || "Not Set");
     }
 
     

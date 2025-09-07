@@ -36,6 +36,8 @@ export const getProfile = async (user_id: string): Promise<ReturnVal> => {
             jsonb_build_object(
                 'group_id', g.group_id,
                 'title', g.title,
+                'join_code', g.join_code,
+                'active', g.active,
                 'role', gm.role
             )
         ) FILTER (WHERE g.group_id IS NOT NULL),
@@ -46,7 +48,7 @@ LEFT JOIN group_membership gm
     ON p.user_id = gm.user_id AND gm.active = true
 LEFT JOIN groups g 
     ON gm.group_id = g.group_id AND g.active = true
-WHERE p.user_id = $1 -- replace with your user id or use a parameter
+WHERE p.active=true and p.user_id = $1 -- replace with your user id or use a parameter
 GROUP BY p.user_id, p.first_name, p.last_name;
         `
         const result = await pool.query(query, [user_id]);
@@ -65,7 +67,7 @@ GROUP BY p.user_id, p.first_name, p.last_name;
         }
 
     } finally {
-        //console.log("getProfile: returns", data, error)
+        console.log("getProfile: returns", data, error)
         
         const result = ReturnValSchema.parse({data, error});
         //console.log("Result", result);

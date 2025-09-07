@@ -26,7 +26,9 @@ import { Trash2, Search, X } from "lucide-react"
 import { toast} from "sonner";
 
 import {z} from "zod";
-import { Groups, Group, GroupSchema } from "@/actions/groups/types"
+
+import { type Groups, type Group, GroupSchema } from "@/actions/groups-memberships/types";
+
 import { v4 as uuidv4 } from "uuid";
 import { cornersOfRectangle } from "@dnd-kit/core/dist/utilities/algorithms/helpers"
 
