@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict psGbeVYTKLk7t8pDqGgEqcorhpHCyDi80SvIeP7GDT4MDDacaeccRqzoAiqAf71
+-- \restrict psGbeVYTKLk7t8pDqGgEqcorhpHCyDi80SvIeP7GDT4MDDacaeccRqzoAiqAf71
 
 -- Dumped from database version 16.9 (Debian 16.9-1.pgdg120+1)
 -- Dumped by pg_dump version 16.10 (Debian 16.10-1.pgdg12+1)
@@ -104,23 +104,9 @@ INSERT INTO public.activities VALUES ('31fadf34-5953-4dad-afa2-89cfd6db144e', 'n
 
 
 --
--- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: -
---
-
-INSERT INTO public.groups VALUES ('6469ceab-050b-4ae8-af1f-51d8187a64c6', '25-09A-DT', true, '2025-08-18 18:40:42.643097', 'user_2yjidP4UdYKaAmizJ9TzJvecPhw', NULL);
-INSERT INTO public.groups VALUES ('5a8c591d-91cf-4cd8-89b3-507964e80ce8', '25-09B-DT', true, '2025-08-18 18:40:42.643097', 'user_2yjidP4UdYKaAmizJ9TzJvecPhw', NULL);
-INSERT INTO public.groups VALUES ('cca0de25-4f1b-43ea-8511-f5e2b0fca6fa', '25-09C-DT', true, '2025-08-18 18:40:42.643097', 'user_2yjidP4UdYKaAmizJ9TzJvecPhw', NULL);
-INSERT INTO public.groups VALUES ('a06040c0-bc2e-4cd0-84dd-9eed0041de2a', '25-09D-DT', true, '2025-08-18 18:40:42.643097', 'user_2yjidP4UdYKaAmizJ9TzJvecPhw', NULL);
-
-
---
 -- Data for Name: assignments; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.assignments VALUES ('ea5a6cbb-ef2b-4bfd-887b-a7f3160af11f', '6469ceab-050b-4ae8-af1f-51d8187a64c6', true, '2025-08-18 18:40:42.64977');
-INSERT INTO public.assignments VALUES ('ea5a6cbb-ef2b-4bfd-887b-a7f3160af11f', '5a8c591d-91cf-4cd8-89b3-507964e80ce8', true, '2025-08-18 18:40:42.64977');
-INSERT INTO public.assignments VALUES ('ea5a6cbb-ef2b-4bfd-887b-a7f3160af11f', 'cca0de25-4f1b-43ea-8511-f5e2b0fca6fa', true, '2025-08-18 18:40:42.64977');
-INSERT INTO public.assignments VALUES ('ea5a6cbb-ef2b-4bfd-887b-a7f3160af11f', 'a06040c0-bc2e-4cd0-84dd-9eed0041de2a', true, '2025-08-18 18:40:42.64977');
 
 
 --
@@ -209,14 +195,6 @@ INSERT INTO public.profiles VALUES ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', 'Leroy',
 INSERT INTO public.profiles VALUES ('user_32ES0KhUNhbbwh4b9KfKeKlqdJo', 'Joseph', 'Costelloe', false, true, '2025-09-04 11:06:57.090498', 'user_32ES0KhUNhbbwh4b9KfKeKlqdJo', NULL);
 
 
---
--- Data for Name: group_membership; Type: TABLE DATA; Schema: public; Owner: -
---
-
-INSERT INTO public.group_membership VALUES ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', '6469ceab-050b-4ae8-af1f-51d8187a64c6', 'teacher', true, '2025-08-18 18:40:42.645405');
-INSERT INTO public.group_membership VALUES ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', '5a8c591d-91cf-4cd8-89b3-507964e80ce8', 'teacher', true, '2025-08-18 18:40:42.645405');
-INSERT INTO public.group_membership VALUES ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', 'cca0de25-4f1b-43ea-8511-f5e2b0fca6fa', 'teacher', true, '2025-08-18 18:40:42.645405');
-INSERT INTO public.group_membership VALUES ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', 'a06040c0-bc2e-4cd0-84dd-9eed0041de2a', 'teacher', true, '2025-08-18 18:40:42.645405');
 
 
 --
@@ -273,5 +251,5 @@ INSERT INTO public.nc_items VALUES ('7f5715a5-afec-4c8f-a7fa-bd33584e0a80', '583
 -- PostgreSQL database dump complete
 --
 
-\unrestrict psGbeVYTKLk7t8pDqGgEqcorhpHCyDi80SvIeP7GDT4MDDacaeccRqzoAiqAf71
+-- \unrestrict psGbeVYTKLk7t8pDqGgEqcorhpHCyDi80SvIeP7GDT4MDDacaeccRqzoAiqAf71
 
