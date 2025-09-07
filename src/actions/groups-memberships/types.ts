@@ -2,14 +2,24 @@ import {z} from "zod";
 
 import { v4 as uuidv4 } from "uuid";
 
+function generateRandomCode(length = 5) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * chars.length);
+    result += chars[randomIndex];
+  }
+  return result;
+}
+
 export const GroupSchema = z.object({
     type: z.string().default("group"),
     group_id: z.string().default(() => uuidv4()),
     title: z.string().default("Not Set"),
-    join_code: z.string().default("Not Set"),
+    join_code: z.string().default(() => generateRandomCode()),
     member_count: z.number().default(0),
     active: z.boolean().default(true),
-    created: z.coerce.date().default(new Date()),
+    created: z.coerce.date().default(() => new Date()),
     created_by: z.string().default("auto")
 });
 

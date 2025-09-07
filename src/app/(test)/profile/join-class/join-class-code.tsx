@@ -65,6 +65,7 @@ export function JoinClassForm({
       // Simulate API call - replace with actual implementation
       
       startTransition(()=>{
+        console.log("join-class:: adding", profile, group);
         profile && group && addMembershipGroupOnDb({profile, group});
       })
 
@@ -105,6 +106,7 @@ export function JoinClassForm({
     }
 
     // update UI
+    console.log("New Profile recieved")
     setProfile(addState.data);
     onProfileChange(addState.data);
 

@@ -10,19 +10,19 @@ export const ReturnValSchema = z.object({
 
 export type ReturnVal = z.infer<typeof ReturnValSchema>;
 
-export const createNewProfile = async (user_id: string, first_name: string, last_name: string): Promise<ReturnVal> => {
+export const createNewProfile = async (user_id: string, first_name: string, last_name: string, email: string): Promise<ReturnVal> => {
     let data = null, error = null;
 
     //console.log("createNewProfile: user_id", user_id);
 
     try {
         const query = `
-            INSERT INTO profiles (user_id, first_name, last_name, is_teacher, created_by)
-            VALUES ($1, $2, $3, $4, $1)
+            INSERT INTO profiles (user_id, first_name, last_name, email, is_teacher, created_by)
+            VALUES ($1, $2, $3, $4, $5, $1)
             RETURNING *;
         `;
 
-        const result = await pool.query(query, [user_id, first_name, last_name, false]);
+        const result = await pool.query(query, [user_id, first_name, last_name, email, false]);
 
         data = result.rows[0];
         data.created = data.created.toISOString(); // Convert to ISO string if needed

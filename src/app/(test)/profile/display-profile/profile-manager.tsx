@@ -27,7 +27,7 @@ export function ProfileManager({initialProfile}: {initialProfile: Profile}) {
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold text-foreground">Profile Information</h1>
         <div className="flex items-center space-x-2">
-          <Label htmlFor="edit-mode">Edit Mode</Label>
+          {profile && profile.is_teacher && <Label htmlFor="edit-mode">Edit Mode</Label>}
           <Switch id="edit-mode" checked={canEdit} onCheckedChange={setCanEdit} />
         </div>
       </div>

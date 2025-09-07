@@ -30,10 +30,14 @@ import {
 } from "@/components/ui/tabs"
 
 import ProfileManager from "./profile-manager";
+import { createNewProfile } from "@/actions/profiles/createNewProfile";
 
 const Page = async () => {
 
     const {userId} = await auth();
+    const currentUserDetails = await currentUser();
+
+    console.log("Current User", currentUserDetails?.firstName, currentUserDetails?.lastName, currentUserDetails?.emailAddresses[0]?.emailAddress);
 
     const {data: memberships, error: membershipError} = await getMemberships();
 
@@ -47,6 +51,23 @@ const Page = async () => {
 
     let {data: profile, error} = userId ? await getProfile(userId) : {data: null, error: null};
     
+    // profile doesn't exist so create one.
+    if (profile == null) {
+        
+        console.log("Profile not found, creating")
+        const {data, error:createProfileError} = await createNewProfile(
+            userId, 
+            currentUserDetails?.firstName || "",  
+            currentUserDetails?.lastName || "",
+            currentUserDetails?.emailAddresses[0]?.emailAddress || ""
+        );
+
+        if (createProfileError) {
+            return <div>Profile Create Errror {createProfileError}</div>
+        }
+
+        profile = data;
+    }
     
     return <div className="min-h-screen bg-background. flex items-center  p-4 flex-col">
         <div className="text-4xl justify-left items-left">Profile</div>

@@ -476,6 +476,19 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 UPDATE groups
 SET join_code = UPPER(LEFT(encode(gen_random_bytes(16), 'hex'), 5));
 
+-- File: 17-edit-profiles.sql
+--- =================
+--- Add the join_code colum to the table
+--- =================
+
+alter table profiles add column email text default 'Not Set';
+alter table profiles add column mother_email text default 'Not Set';
+alter table profiles add column father_email text default 'Not Set';
+
+
+ALTER TABLE profiles ADD CONSTRAINT unique_profile_email UNIQUE (email);
+
+
 -- File: 99-seed.sql
 --
 -- PostgreSQL database dump
@@ -665,13 +678,6 @@ INSERT INTO public.criteria VALUES ('4fe82345-2caa-4d1e-90e1-5153e9ef4877', '92d
 INSERT INTO public.criteria VALUES ('3a8dc1df-31bb-4063-8c2a-9d81abdefd17', '92da33a5-628f-4714-94f5-84a9701f1fb8', 'I can operate the Laser Cutter to produce parts for a project.', true, '2025-08-23 07:05:10.884992', 'auto', 2);
 INSERT INTO public.criteria VALUES ('ade1b073-615e-4885-8c92-d7c3822be671', '92da33a5-628f-4714-94f5-84a9701f1fb8', 'I can design cutting plan to minimise waste.', true, '2025-08-23 07:06:14.486335', 'auto', 3);
 
-
---
--- Data for Name: profiles; Type: TABLE DATA; Schema: public; Owner: -
---
-
-INSERT INTO public.profiles VALUES ('user_2yjidP4UdYKaAmizJ9TzJvecPhw', 'Leroy', 'Salih', true, true, '2025-08-18 18:40:42.640862', 'auto', NULL);
-INSERT INTO public.profiles VALUES ('user_32ES0KhUNhbbwh4b9KfKeKlqdJo', 'Joseph', 'Costelloe', false, true, '2025-09-04 11:06:57.090498', 'user_32ES0KhUNhbbwh4b9KfKeKlqdJo', NULL);
 
 
 
