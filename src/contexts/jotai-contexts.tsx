@@ -13,7 +13,7 @@ import { Lessons } from "@/actions/lessons/types";
 import { Criterias } from "@/actions/criteria/types";
 import { LOLessonsMaps } from "@/actions/learning-objectives-lessons-map/types";
 import { Assignments } from "@/actions/assignments/types";
-import { Groups } from "@/actions/membership/types";
+import { Groups } from "@/actions/groups-memberships/types";
 import { Activities } from "@/actions/activities/types";
 
 

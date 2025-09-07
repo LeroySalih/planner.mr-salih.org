@@ -442,7 +442,7 @@ const DisplayAssignments = ({unit}:{unit: Unit}) => {
         group_id: ng,
         assignment_from: null,
         unit_title: unit.title,
-        group_title: groups?.filter(g => g.group_id == ng)[0].title || ""
+        group_title: groups?.filter((g:any) => g.group_id == ng)[0].title || ""
       }))
     ] : [];
 
@@ -479,7 +479,7 @@ const DisplayAssignments = ({unit}:{unit: Unit}) => {
             
 
           Edit Assignments 1<MultiSelectCheckboxes 
-            options={groups?.map(g => ({id: g.group_id, label: g.title || "", value:g.group_id})) || []} 
+            options={groups?.map((g:any) => ({id: g.group_id, label: g.title || "", value:g.group_id})) || []} 
             placeholder='Select Group' 
             initialValues={assignments?.filter(a => a.unit_id == unit.unit_id).map((a) => a.group_id)} 
             onSelectionChange={handleAssignmentChange}           
